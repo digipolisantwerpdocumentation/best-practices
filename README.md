@@ -16,9 +16,9 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Best practices Digipolis](#best-practices-digipolis)
-  - [Inhoudstabel](#inhoudstabel)
-  - [Document historiek](#document-historiek)
+
+- [Document historiek](#document-historiek)
+- [Best practices](#best-practices)
   - [Gebruik het Splunk Dashboard voor troubleshooting (V)](#gebruik-het-splunk-dashboard-voor-troubleshooting-v)
   - [Stel liveness en readiness probes in (V)](#stel-liveness-en-readiness-probes-in-v)
   - [Kies bewust wat er wel en niet gelogd wordt (V)](#kies-bewust-wat-er-wel-en-niet-gelogd-wordt-v)
