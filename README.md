@@ -1,6 +1,20 @@
+
+
+# Best practices Digipolis
+
+**Doel:** Best practices en lessons learned uit de praktijk delen in de organisatie.
+
+**Doelgroep:** developers van projectteams, business architecten en applicatiearchitecten.
+
+**Communitywerking:** Voeg gerust nieuwe best practices toe middels een pull request.
+
+
+*In de titels wordt aangegeven welk onderdeel must do/verplicht (V) of should do/optioneel (O) is.*
+
+## Inhoudstabel
+<!-- generated with doctoc (https://www.npmjs.com/package/doctoc) -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Best practices Digipolis](#best-practices-digipolis)
   - [Inhoudstabel](#inhoudstabel)
@@ -28,19 +42,6 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Best practices Digipolis
-
-**Doel:** Best practices en lessons learned uit de praktijk delen in de organisatie.
-
-**Doelgroep:** developers van projectteams, business architecten en applicatiearchitecten.
-
-**Communitywerking:** Voeg gerust nieuwe best practices toe middels een pull request.
-
-
-*In de titels wordt aangegeven welk onderdeel must do/verplicht (V) of should do/optioneel (O) is.*
-
-## Inhoudstabel
-<!-- TODO -> Dit kun je genereren met doctoc? PC : generated with doctoc (https://www.npmjs.com/package/doctoc) with option --notitle -->
 
 ## Document historiek
 
