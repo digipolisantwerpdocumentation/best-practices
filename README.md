@@ -11,7 +11,7 @@
 
 *In de titels wordt aangegeven welk onderdeel must do/verplicht (V) of should do/optioneel (O) is.*
 
-## Inhoudstabel
+# Inhoudstabel
 <!-- generated with doctoc (https://www.npmjs.com/package/doctoc) -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -43,7 +43,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
-## Document historiek
+# Document historiek
 
 Versie       | Auteur                 | Datum      | Opmerkingen
 ------       | -------                | -----      | ------------
@@ -51,6 +51,9 @@ Versie       | Auteur                 | Datum      | Opmerkingen
 ---          | ---                    | ---        | ---
 ---          | ---                    | ---        | ---
 ---          | ---                    | ---        | ---
+
+
+# Best practices
 
 ## Gebruik het Splunk Dashboard voor troubleshooting (V)
 
