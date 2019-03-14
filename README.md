@@ -24,7 +24,7 @@
   - [Kies bewust wat er wel en niet gelogd wordt (V)](#kies-bewust-wat-er-wel-en-niet-gelogd-wordt-v)
   - [Implementatie van health checks (V)](#implementatie-van-health-checks-v)
     - [Enkele tips bij het implementeren van health checks](#enkele-tips-bij-het-implementeren-van-health-checks)
-  - [Upgrade naar de laatste versie van gebruikte technologiën (V)](#upgrade-naar-de-laatste-versie-van-gebruikte-technologi%C3%ABn-v)
+  - [Upgrade naar de laatste versie van gebruikte technologieën (V)](#upgrade-naar-de-laatste-versie-van-gebruikte-technologie%C3%ABn-v)
   - [Overweeg het gebruik van toolboxen in applicaties (V)](#overweeg-het-gebruik-van-toolboxen-in-applicaties-v)
   - [Analyseer thread starvation (V)](#analyseer-thread-starvation-v)
   - [Maak gebruik van HTTP client factory (V)](#maak-gebruik-van-http-client-factory-v)
