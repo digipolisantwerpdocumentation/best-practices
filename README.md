@@ -99,7 +99,7 @@ Voor de implementatie van de health checks is er een nieuwe standaard in de maak
 
 -   Vraag in de monitoring call enkel ping-endpoints op van onderliggende services. Het bevragen van monitoring endpoints heeft geen zin en vertraagt je eigen monitoring calls aanzienlijk. Dit kan ook circular calls introduceren die alles vertragen en uiteindelijk timeouts geven. 
 
-## Upgrade naar de laatste versie van gebruikte technologiën (V)
+## Upgrade naar de laatste versie van gebruikte technologieën (V)
 
 Als er van technologieën een nieuwe versie wordt uitgebracht, bevat deze vaak verbeteringen in het kader van security, performantie, bugfixes etc. Het is daarom aangeraden zo snel mogelijk (na voldoende te testen) te upgraden naar de laatste versies. 
 Zolang de frameworks nog van security updates worden voorzien, is het geen absolute must om te upgraden. 
