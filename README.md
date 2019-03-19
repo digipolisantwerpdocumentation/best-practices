@@ -79,7 +79,7 @@ Als er gebruik gemaakt wordt van standaard loginstellingen, wordt zowat alles ge
 Geef ook zeker correlationId’s mee in je logging, dit vergemakkelijkt troubleshooting over diverse flows heen.
 
 Uitleg over hoe je het best de loglevels instelt, incl verwijzingen naar voorbeeldcode, vind je hier: https://docs.google.com/document/d/1tnK8JuM8RoK_3JlAKHaCvyySY4a6zNdhZcs9IIOcfQs/edit 
-*To do: de google doc omzetten in een github document?*
+*Vul deze best practice gerust aan met je eigen ervaringen*
 
 ## Implementatie van health checks (V)
 
@@ -129,7 +129,6 @@ De lifecycle van een httpclient is vrij complex. Je kan een httpClient als singl
 https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests 
 Leuk hierbij is dat je typed clients kan maken die gevuld kunnen worden met hun eigen HttpMessageHandlers en configuratie en die eenvoudigweg geïnjecteerd kunnen worden. De lifecycle van de agents waar de HttpClient geïnjecteerd wordt is dan altijd transient! 
 Voorbeeld: https://bitbucket.antwerpen.be/projects/GDP/repos/bijlage_api_aspnetcore/browse/src/Digipolis.ABS.Bijlage.API/DependencyRegistration.cs 
-*To do: deze best practice meer to-the-point beschrijven*
 
 ## Zorg voor continue execution door headers read (V)
 
