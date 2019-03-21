@@ -85,7 +85,7 @@ Uitleg over hoe je het best de loglevels instelt, incl verwijzingen naar voorbee
 
 Health checks zorgen ervoor dat het projectteam of P&I kan ingrijpen als er iets met de applicatie of service aan de hand is. Alerting gebeurt via een dashboard en via e-mailnotificaties. 
 
-Momenteel wordt er voor de dashboarding en alerting gebruik gemaakt van Check_Mk en de nieuwe status API (het continuous monitoring platform).
+Momenteel wordt er voor de dashboarding en alerting gebruik gemaakt van Check_Mk en (binnenkort) van de nieuwe status API (= het continuous monitoring platform).
 
 Voor de implementatie van de health checks is er een nieuwe standaard in de maak die beter aansluit op het gebruik van liveness en readiness probes. De (work in progress) informatie vind je hier: https://github.com/digipolisantwerpdocumentation/status-monitoring 
 
@@ -93,11 +93,9 @@ Voor de implementatie van de health checks is er een nieuwe standaard in de maak
 
 -   Zet de juiste beveiliging op de endpoints (ze moeten snel uitgevoerd kunnen worden)
 
--   Bedenk bij het opstellen van het components endpoint goed welke onderliggende componenten echt kritisch zijn voor het functioneren van je applicatie en welke niet (bijvoorbeeld: de logging engine is niet kritisch, maar de database wel). En bepaal op basis daarvan of je  endpoint op OK, degraded of outage (of in de oude versie: OK, WARN, CRIT) komt te staan. 
+-   Bedenk bij het opstellen van het components endpoint (voorheen 'monitoring endpoint) goed welke onderliggende componenten echt kritisch zijn voor het functioneren van je applicatie en welke niet (bijvoorbeeld: de logging engine is niet kritisch, maar de database wel). En bepaal op basis daarvan of je  endpoint op OK, degraded of outage (of in de oude versie: OK, WARN, CRIT) komt te staan. 
 
--   Vraag in de monitoring call de status van onderliggende services op via de status API (het monitoring systeem) in plaats van zelf nog een extra call te doen naar de betreffende service. 
-
--   Vraag in de monitoring call enkel ping-endpoints op van onderliggende services. Het bevragen van monitoring endpoints heeft geen zin en vertraagt je eigen monitoring calls aanzienlijk. Dit kan ook circular calls introduceren die alles vertragen en uiteindelijk timeouts geven. 
+-   Vraag in de components (monitoring) call de status van onderliggende services op via de status API (het continuous monitoring systeem) in plaats van zelf nog een extra call te doen naar de betreffende service. Je hoeft op die manier in je components call dus geen status of monitoring endpoints meer te bevragen. Dit zorgt voor een snellere afhandeling en voorkomt circular calls die alles vertragen en uiteindelijk timeouts zouden kunnen geven. 
 
 ## Upgrade naar de laatste versie van gebruikte technologieën (V)
 
