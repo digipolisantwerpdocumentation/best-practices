@@ -50,6 +50,10 @@ Versie       | Auteur                 | Datum      | Opmerkingen
 ------       | -------                | -----      | ------------
 0.1          | Karlien Engelen        | 06/03/2019 | Initial draft
 1.0          | Karlien Engelen        | 10/05/2019 | Toevoegen best practice 'connection pool settings', update versienr naar 1.x
+1.1          | Karlien Engelen        | 10/05/2019 | Toevoegen best practice 'Problemen oplossen ontwikkelomgeving bij gebruik docker'
+---          | ---                    | ---        | ---
+---          | ---                    | ---        | ---
+---          | ---                    | ---        | ---
 ---          | ---                    | ---        | ---
 ---          | ---                    | ---        | ---
 
@@ -200,6 +204,10 @@ Aandachtspunten bij troubleshooting:
 Wanneer `Maximum Pool Size` niet ingesteld wordt, zullen database operaties bij piekgebruik van de toepassing niet gequeued worden en zal de toepassing meer connecties proberen te openen dan mogelijk. Zodra je meer connecties probeert te maken dan toegelaten krijg je een fout. Door het gebruik van de connectionpool kun je zorgen voor een slimmer gebruik van het maximaal aantal toegelaten database connections. 
 
 Een uitgebreide uitleg en werkwijze vind je hier: https://github.com/digipolisantwerpdocumentation/best-practices/blob/master/CalculateConnectionPoolSettings.md
+
+## Problemen oplossen ontwikkelomgeving bij gebruik docker
+
+Af en toe gebeurt het dat ontwikkelaars met een actief docker netwerk op hun computer problemen ondervinden om bepaalde websites of systemen te raadplegen. De oplossing hiervoor vind je op https://wiki.antwerpen.be/Digipolis/index.php/Problemen_ontwikkelomgeving_bij_gebruik_van_docker 
 
 
 # Nuttige links
