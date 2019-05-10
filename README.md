@@ -194,7 +194,7 @@ Aandachtspunten bij troubleshooting:
 -   Uittekenen van de flow van calls die het probleem veroorzaakt
 -   Reproduceerbaar scenario
 
-## Berekenen van connection pool settings
+## Berekenen van connection pool settings (O)
 
 Wanneer `Maximum Pool Size` niet ingesteld wordt, zullen database operaties bij piekgebruik van de toepassing niet gequeued worden en zal de toepassing meer connecties proberen te openen dan mogelijk. Zodra je meer connecties probeert te maken dan toegelaten krijg je een fout. Door het gebruik van de connectionpool kun je zorgen voor een slimmer gebruik van het maximaal aantal toegelaten database connections. 
 
