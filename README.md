@@ -205,7 +205,7 @@ Wanneer `Maximum Pool Size` niet ingesteld wordt, zullen database operaties bij 
 
 Een uitgebreide uitleg en werkwijze vind je hier: https://github.com/digipolisantwerpdocumentation/best-practices/blob/master/CalculateConnectionPoolSettings.md
 
-## Problemen oplossen ontwikkelomgeving bij gebruik docker
+## Problemen oplossen ontwikkelomgeving bij gebruik docker (O)
 
 Af en toe gebeurt het dat ontwikkelaars met een actief docker netwerk op hun computer problemen ondervinden om bepaalde websites of systemen te raadplegen. De oplossing hiervoor vind je op https://wiki.antwerpen.be/Digipolis/index.php/Problemen_ontwikkelomgeving_bij_gebruik_van_docker 
 
