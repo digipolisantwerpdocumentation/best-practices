@@ -38,6 +38,7 @@
   - [Bouw retry's in bij het aanspreken van onderliggende componenten (O)](#bouw-retrys-in-bij-het-aanspreken-van-onderliggende-componenten-o)
   - [Gebruik de aanbevolen docker images (O)](#gebruik-de-aanbevolen-docker-images-o)
   - [Gebruik het stappenplan voor troubleshooting (O)](#gebruik-het-stappenplan-voor-troubleshooting-o)
+  - [Berekenen van connection pool settings (O)](#berekenen-van-connection-pool-settings-o)
 - [Nuttige links](#nuttige-links)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
