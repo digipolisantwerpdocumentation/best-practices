@@ -39,6 +39,7 @@
   - [Gebruik de aanbevolen docker images (O)](#gebruik-de-aanbevolen-docker-images-o)
   - [Gebruik het stappenplan voor troubleshooting (O)](#gebruik-het-stappenplan-voor-troubleshooting-o)
   - [Berekenen van connection pool settings (O)](#berekenen-van-connection-pool-settings-o)
+  - [Problemen oplossen ontwikkelomgeving bij gebruik docker (O)](#problemen-oplossen-ontwikkelomgeving-bij-gebruik-docker-o)
 - [Nuttige links](#nuttige-links)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
