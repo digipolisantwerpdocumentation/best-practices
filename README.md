@@ -29,6 +29,7 @@
   - [Analyseer thread starvation (V)](#analyseer-thread-starvation-v)
   - [Maak gebruik van HTTP client factory (V)](#maak-gebruik-van-http-client-factory-v)
   - [Zorg voor continue execution door headers read (V)](#zorg-voor-continue-execution-door-headers-read-v)
+  - [Berekenen van connection pool settings (V)](#berekenen-van-connection-pool-settings-v)
   - [Code quality control (V)](#code-quality-control-v)
   - [Controleer de (technische) afspraken uit QG1 en 2 (V)](#controleer-de-technische-afspraken-uit-qg1-en-2-v)
   - [Voorzie een HTTP response time mee in de logging (O)](#voorzie-een-http-response-time-mee-in-de-logging-o)
@@ -38,7 +39,6 @@
   - [Bouw retry's in bij het aanspreken van onderliggende componenten (O)](#bouw-retrys-in-bij-het-aanspreken-van-onderliggende-componenten-o)
   - [Gebruik de aanbevolen docker images (O)](#gebruik-de-aanbevolen-docker-images-o)
   - [Gebruik het stappenplan voor troubleshooting (O)](#gebruik-het-stappenplan-voor-troubleshooting-o)
-  - [Berekenen van connection pool settings (O)](#berekenen-van-connection-pool-settings-o)
   - [Problemen oplossen ontwikkelomgeving bij gebruik docker (O)](#problemen-oplossen-ontwikkelomgeving-bij-gebruik-docker-o)
 - [Nuttige links](#nuttige-links)
 
