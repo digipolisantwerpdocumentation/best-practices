@@ -68,6 +68,7 @@ Dit dashboard stelt de ontwikkelaar in staat om alle HTTP-calls van hun applicat
 De belangrijkste metrics van een HTTP-call voor het bepalen van de gezondheid van een applicatie zijn de responstijden en de 50X-statuscodes. Het falen van een service gaat vaak gepaard met een 50X response code. De code geeft meer context over het falen.
 
 Zie uitleg: https://wiki.antwerpen.be/Digipolis/index.php/Splunk_(Ontwikkelaars) 
+en de presentatie die gegeven is op de Tech guild bijeenkomst van 21/3/2019: https://docs.google.com/presentation/d/17ahE8aA7iDEL8elM2WGknYA2AyDxBbgBz1VMrpS-r1I/edit?usp=sharing
 
 ## Stel liveness en readiness probes in (V)
 
