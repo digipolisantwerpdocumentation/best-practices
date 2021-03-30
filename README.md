@@ -17,60 +17,59 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Document historiek](#document-historiek)
+- [Stappenplan](#stappenplan)
 - [Tools](#tools)
-- [Best practices](#best-practices)
-  - [Monitoring](#monitoring)
-    - [Gebruik het Splunk Dashboard voor troubleshooting (V)](#gebruik-het-splunk-dashboard-voor-troubleshooting-v)
-    - [Stel liveness en readiness probes in (V)](#stel-liveness-en-readiness-probes-in-v)
-  - [Logging](#logging)
-    - [Kies bewust wat er wel en niet gelogd wordt (V)](#kies-bewust-wat-er-wel-en-niet-gelogd-wordt-v)
-    - [Implementatie van health checks (V)](#implementatie-van-health-checks-v)
-      - [Enkele tips bij het implementeren van health checks](#enkele-tips-bij-het-implementeren-van-health-checks)
-      - [Voorzie een HTTP response time mee in de logging (O)](#voorzie-een-http-response-time-mee-in-de-logging-o)
-  - [App](#app)
-    - [Upgrade naar de laatste versie van gebruikte technologieën (V)](#upgrade-naar-de-laatste-versie-van-gebruikte-technologie%C3%ABn-v)
-    - [Overweeg het gebruik van toolboxen in applicaties (V)](#overweeg-het-gebruik-van-toolboxen-in-applicaties-v)
-    - [Analyseer thread starvation (V)](#analyseer-thread-starvation-v)
-    - [Maak gebruik van HTTP client factory (V)](#maak-gebruik-van-http-client-factory-v)
-    - [Zorg voor continue execution door headers read (V)](#zorg-voor-continue-execution-door-headers-read-v)
-    - [Vergroot de performantie bij serialiseren en deserialiseren (UTF8JSON) (O)](#vergroot-de-performantie-bij-serialiseren-en-deserialiseren-utf8json-o)
-    - [Gebruik streams ivm memory en performantie (O)](#gebruik-streams-ivm-memory-en-performantie-o)
-    - [Weeg de keus voor asynchrone werking af (O)](#weeg-de-keus-voor-asynchrone-werking-af-o)
-    - [Bouw retry's in bij het aanspreken van onderliggende componenten (O)](#bouw-retrys-in-bij-het-aanspreken-van-onderliggende-componenten-o)
-    - [Less > more](#less--more)
-    - [Optimize/reduce db queries](#optimizereduce-db-queries)
-    - [Prevent loops](#prevent-loops)
-    - [Async / queue](#async--queue)
-    - [No base 64 attachments in entity & history …](#no-base-64-attachments-in-entity--history-)
-    - [Load data on initialization](#load-data-on-initialization)
-    - [Only fetch data once in BFF frontend](#only-fetch-data-once-in-bff-frontend)
-    - [paging en archiving toevoegen](#paging-en-archiving-toevoegen)
-    - [Enkel ophalen wat nodig is](#enkel-ophalen-wat-nodig-is)
-    - [async tasks in sync architecture](#async-tasks-in-sync-architecture)
-    - [Ceph ipv digital assets](#ceph-ipv-digital-assets)
-    - [Auhtz v1](#auhtz-v1)
-    - [memory leaks](#memory-leaks)
-  - [Database](#database)
+  - [Gebruik het Splunk Dashboard voor http troubleshooting (V)](#gebruik-het-splunk-dashboard-voor-http-troubleshooting-v)
+  - [Gebruik het Kibana CheckMk Dashboard voor applicatie log troubleshooting (V)](#gebruik-het-kibana-checkmk-dashboard-voor-applicatie-log-troubleshooting-v)
+  - [Gebruik het Sysdig Elastic Dashboard voor container troubleshooting (V)](#gebruik-het-sysdig-elastic-dashboard-voor-container-troubleshooting-v)
+  - [Gebruik het APM Elastic Dashboard voor performantie troubleshooting (V)](#gebruik-het-apm-elastic-dashboard-voor-performantie-troubleshooting-v)
+- [Monitoring](#monitoring)
+  - [Implementatie van health checks (V)](#implementatie-van-health-checks-v)
+    - [Enkele tips bij het implementeren van health checks](#enkele-tips-bij-het-implementeren-van-health-checks)
+    - [Voorzie een HTTP response time mee in de logging (O)](#voorzie-een-http-response-time-mee-in-de-logging-o)
+  - [Stel liveness en readiness probes in (V)](#stel-liveness-en-readiness-probes-in-v)
+- [Logging](#logging)
+  - [Kies bewust wat er wel en niet gelogd wordt (V)](#kies-bewust-wat-er-wel-en-niet-gelogd-wordt-v)
+- [App](#app)
+  - [Upgrade naar de laatste versie van gebruikte technologieën (V)](#upgrade-naar-de-laatste-versie-van-gebruikte-technologie%C3%ABn-v)
+  - [Overweeg het gebruik van toolboxen in applicaties (V)](#overweeg-het-gebruik-van-toolboxen-in-applicaties-v)
+  - [Analyseer thread starvation (V)](#analyseer-thread-starvation-v)
+  - [Maak gebruik van HTTP client factory in dotnet (V)](#maak-gebruik-van-http-client-factory-in-dotnet-v)
+  - [Zorg voor continue execution door headers read (V)](#zorg-voor-continue-execution-door-headers-read-v)
+  - [Vergroot de performantie bij serialiseren en deserialiseren (UTF8JSON) (O)](#vergroot-de-performantie-bij-serialiseren-en-deserialiseren-utf8json-o)
+  - [Gebruik streams ivm memory en performantie (O)](#gebruik-streams-ivm-memory-en-performantie-o)
+  - [Weeg de keus voor asynchrone werking af (O)](#weeg-de-keus-voor-asynchrone-werking-af-o)
+  - [Bouw retry's in bij het aanspreken van onderliggende componenten (O)](#bouw-retrys-in-bij-het-aanspreken-van-onderliggende-componenten-o)
+  - [Less > more](#less--more)
+  - [Optimaliseer en beperk de database queries](#optimaliseer-en-beperk-de-database-queries)
+  - [Voorkom overbodige http callls](#voorkom-overbodige-http-callls)
+  - [Maak gebruik van asynchrone verwerking waar mogelijk](#maak-gebruik-van-asynchrone-verwerking-waar-mogelijk)
+  - [Voorkom blobs aan data in uw model](#voorkom-blobs-aan-data-in-uw-model)
+  - [Laad data bij het opstarten van de applicatie ipv voor iedere request](#laad-data-bij-het-opstarten-van-de-applicatie-ipv-voor-iedere-request)
+- [Voorkom dat de SPA dubbele calls doet naar de BFF/API](#voorkom-dat-de-spa-dubbele-calls-doet-naar-de-bffapi)
+  - [Correcte paginatie voorzien en enkel ophalen wat nodig is](#correcte-paginatie-voorzien-en-enkel-ophalen-wat-nodig-is)
+  - [Voorkom asynchrone handelingen in een in syncchrone architectuur](#voorkom-asynchrone-handelingen-in-een-in-syncchrone-architectuur)
+  - [Maak gebruik van Ceph ipv digital assets](#maak-gebruik-van-ceph-ipv-digital-assets)
+  - [Auhtz: gebruik authz api versie > v2](#auhtz-gebruik-authz-api-versie--v2)
+  - [Voorkom memory leaks en voorzie gc indien nodig](#voorkom-memory-leaks-en-voorzie-gc-indien-nodig)
+- [Database](#database)
     - [Berekenen van connection pool settings (V)](#berekenen-van-connection-pool-settings-v)
-    - [slow query](#slow-query)
-    - [indexes(!)](#indexes)
-    - [Optimize/reduce db queries](#optimizereduce-db-queries-1)
+    - [Voorkom trage queries](#voorkom-trage-queries)
+    - [Indexen(!)](#indexen)
     - [(distributed) cache](#distributed-cache)
     - [Db backups comvault](#db-backups-comvault)
     - [db connecties in lijn zetten met aantal gebruikte pods](#db-connecties-in-lijn-zetten-met-aantal-gebruikte-pods)
+    - [query plan analyseren met EXPLAIN](#query-plan-analyseren-met-explain)
     - [pgstats](#pgstats)
-  - [CI/CD](#cicd)
+- [CI/CD](#cicd)
     - [Code quality control (V)](#code-quality-control-v)
     - [Controleer de (technische) afspraken uit QG1 en 2 (V)](#controleer-de-technische-afspraken-uit-qg1-en-2-v)
     - [Problemen oplossen ontwikkelomgeving bij gebruik docker (O)](#problemen-oplossen-ontwikkelomgeving-bij-gebruik-docker-o)
-  - [Infra](#infra)
+- [Infrastructuur](#infrastructuur)
     - [Gebruik de aanbevolen docker images (O)](#gebruik-de-aanbevolen-docker-images-o)
-  - [Network](#network)
-    - [Separate environments (haproxy)](#separate-environments-haproxy)
-    - [Internal communication vs ext vs apigw](#internal-communication-vs-ext-vs-apigw)
-    - [Redhat latency](#redhat-latency)
-  - [Overige](#overige)
-    - [Gebruik het stappenplan voor troubleshooting (O)](#gebruik-het-stappenplan-voor-troubleshooting-o)
+  - [Netwerk](#netwerk)
+    - [Maak gebruik van de verschillende omgevingen (haproxy)](#maak-gebruik-van-de-verschillende-omgevingen-haproxy)
+    - [Maak gebruik van internen, externe en api gateway dns'en](#maak-gebruik-van-internen-externe-en-api-gateway-dnsen)
 - [Nuttige links](#nuttige-links)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -83,28 +82,32 @@
 | 0.1    | Karlien Engelen | 06/03/2019 | Initial draft                                                                     |
 | 1.0    | Karlien Engelen | 10/05/2019 | Toevoegen best practice 'connection pool settings', update versienr naar 1.x      |
 | 1.1    | Karlien Engelen | 10/05/2019 | Toevoegen best practice 'Problemen oplossen ontwikkelomgeving bij gebruik docker' |
-| 1.2    | Drie Droesbeke  | 24/03/2021 | Toevoegen best practices ifv performantie                                         |
+| 1.2    | Dries Droesbeke | 24/03/2021 | Toevoegen best practices ifv performantie                                         |
 | ---    | ---             | ---        | ---                                                                               |
 | ---    | ---             | ---        | ---                                                                               |
 | ---    | ---             | ---        | ---                                                                               |
 | ---    | ---             | ---        | ---                                                                               |
+
+
+
+
+# Stappenplan
+
+
+Welke stappen kan een developer / projectteam zelf zetten bij probleemanalyse? En wat verwacht de organisatie van een projectteam, voordat er een multidisciplinair team wordt samengesteld om een probleem breder te onderzoeken? 
+
+Zie stappenplan: https://docs.google.com/document/d/1GBcZdBj-nMdlAyn2WYYomvmV2kjwNIkTCtPhwfEofzM/edit?usp=sharing 
+
+Aandachtspunten bij troubleshooting: 
+-   Infrastructuurtekening inclusief alle koppelingen 
+-   Uittekenen van de flow van calls die het probleem veroorzaakt
+-   Reproduceerbaar scenario
 
 
 # Tools
 
-* CheckMK: http://checkmonitor.antwerpen.be/sst
-* ECE APM: https://c1e1b93ef8c84abb95bd76158f0fa25b.elastic.antwerpen.be:9243/app/apm
-* Splunk: https://splk-sh-01-00.antwerpen.be:8000/
-* Sysdig: https://app.sysdigcloud.com/
 
-
-# Best practices
-
-
-## Monitoring
-
-
-### Gebruik het Splunk Dashboard voor troubleshooting (V)
+## Gebruik het Splunk Dashboard voor http troubleshooting (V)
 
 Dit dashboard stelt de ontwikkelaar in staat om alle HTTP-calls van hun applicatie te onderzoeken.
 
@@ -113,7 +116,57 @@ De belangrijkste metrics van een HTTP-call voor het bepalen van de gezondheid va
 Zie uitleg: https://wiki.antwerpen.be/Digipolis/index.php/Splunk_(Ontwikkelaars) 
 en de presentatie die gegeven is op de Tech guild bijeenkomst van 21/3/2019: https://docs.google.com/presentation/d/17ahE8aA7iDEL8elM2WGknYA2AyDxBbgBz1VMrpS-r1I/edit?usp=sharing
 
-### Stel liveness en readiness probes in (V)
+* Splunk: https://splk-sh-01-00.antwerpen.be:8000/
+
+## Gebruik het Kibana CheckMk Dashboard voor applicatie log troubleshooting (V)
+
+* CheckMK: http://checkmonitor.antwerpen.be/sst
+
+## Gebruik het Sysdig Elastic Dashboard voor container troubleshooting (V)
+
+* Sysdig: https://app.sysdigcloud.com/
+  
+## Gebruik het APM Elastic Dashboard voor performantie troubleshooting (V)
+
+* ECE APM: https://c1e1b93ef8c84abb95bd76158f0fa25b.elastic.antwerpen.be:9243/app/apm
+
+
+
+
+
+
+
+
+
+
+# Monitoring
+
+
+## Implementatie van health checks (V)
+
+Health checks zorgen ervoor dat het projectteam of P&I kan ingrijpen als er iets met de applicatie of service aan de hand is. Alerting gebeurt via een dashboard en via e-mailnotificaties. 
+
+Momenteel wordt er voor de dashboarding en alerting gebruik gemaakt van Check_Mk en (binnenkort) van de nieuwe status API (= het continuous monitoring platform).
+
+Voor de implementatie van de health checks is er een nieuwe standaard in de maak die beter aansluit op het gebruik van liveness en readiness probes. De (work in progress) informatie vind je hier: https://github.com/digipolisantwerpdocumentation/status-monitoring 
+
+### Enkele tips bij het implementeren van health checks
+
+-   Zet de juiste beveiliging op de endpoints (ze moeten snel uitgevoerd kunnen worden)
+
+-   Bedenk bij het opstellen van het components endpoint (voorheen 'monitoring endpoint) goed welke onderliggende componenten echt kritisch zijn voor het functioneren van je applicatie en welke niet (bijvoorbeeld: de logging engine is niet kritisch, maar de database wel). En bepaal op basis daarvan of je  endpoint op OK, degraded of outage (of in de oude versie: OK, WARN, CRIT) komt te staan. 
+
+-   Vraag in de components (monitoring) call de status van onderliggende services op via de status API (het continuous monitoring systeem) in plaats van zelf nog een extra call te doen naar de betreffende service. Je hoeft op die manier in je components call dus geen status of monitoring endpoints meer te bevragen. Dit zorgt voor een snellere afhandeling en voorkomt circular calls die alles vertragen en uiteindelijk timeouts zouden kunnen geven. 
+
+### Voorzie een HTTP response time mee in de logging (O)
+
+Logging (via middleware) van alle inkomende requests en afgeronde requests (en bijbehorende timings) is geen overbodige luxe in een micro-service-omgeving. Ook het gebruik van een correlationId die doorgesluisd wordt doorheen inner calls naar andere API’s is een must om het verhaal van een call die van een afnemer komt, volledig te analyseren. 
+
+Het is een aanrader voor elke applicatie binnen Digipolis. 
+
+Zie voor een ASP .NET CORE voorbeeld van een project: https://bitbucket.antwerpen.be/projects/GDP/repos/gdp_common_aspnetcore/browse/src/GdpCommon/Logging/RequestLogMiddleware.cs
+
+## Stel liveness en readiness probes in (V)
 
 Op alle toepassingen die in openshift draaien, kunnen liveness en readiness probes gedefinieerd worden.
 
@@ -123,8 +176,11 @@ Een readiness probe controleert of de app/service in container requests kan verw
 Zie uitleg: https://bitbucket.antwerpen.be/projects/PLAT/repos/documentation/browse/Docker.md#probes
 
 
-## Logging
-### Kies bewust wat er wel en niet gelogd wordt (V)
+# Logging
+
+
+
+## Kies bewust wat er wel en niet gelogd wordt (V)
 
 Als er gebruik gemaakt wordt van standaard loginstellingen, wordt zowat alles gelogd. Het is beter om werk te steken in het granulair kunnen aansturen van logging niveaus. Doe je dit niet, dan mis je de flexibiliteit om eigen logs op niveau “Information” te loggen en andere logs vanaf “Error”. Dit bemoeilijkt het doorzoeken van logs op het moment dat er een probleem optreedt. 
 
@@ -133,39 +189,17 @@ Geef ook zeker correlationId’s mee in je logging, dit vergemakkelijkt troubles
 Uitleg over hoe je het best de loglevels instelt, incl verwijzingen naar voorbeeldcode, vind je hier: https://docs.google.com/document/d/1tnK8JuM8RoK_3JlAKHaCvyySY4a6zNdhZcs9IIOcfQs/edit 
 *Vul deze best practice gerust aan met je eigen ervaringen*
 
-### Implementatie van health checks (V)
 
-Health checks zorgen ervoor dat het projectteam of P&I kan ingrijpen als er iets met de applicatie of service aan de hand is. Alerting gebeurt via een dashboard en via e-mailnotificaties. 
 
-Momenteel wordt er voor de dashboarding en alerting gebruik gemaakt van Check_Mk en (binnenkort) van de nieuwe status API (= het continuous monitoring platform).
-
-Voor de implementatie van de health checks is er een nieuwe standaard in de maak die beter aansluit op het gebruik van liveness en readiness probes. De (work in progress) informatie vind je hier: https://github.com/digipolisantwerpdocumentation/status-monitoring 
-
-#### Enkele tips bij het implementeren van health checks
-
--   Zet de juiste beveiliging op de endpoints (ze moeten snel uitgevoerd kunnen worden)
-
--   Bedenk bij het opstellen van het components endpoint (voorheen 'monitoring endpoint) goed welke onderliggende componenten echt kritisch zijn voor het functioneren van je applicatie en welke niet (bijvoorbeeld: de logging engine is niet kritisch, maar de database wel). En bepaal op basis daarvan of je  endpoint op OK, degraded of outage (of in de oude versie: OK, WARN, CRIT) komt te staan. 
-
--   Vraag in de components (monitoring) call de status van onderliggende services op via de status API (het continuous monitoring systeem) in plaats van zelf nog een extra call te doen naar de betreffende service. Je hoeft op die manier in je components call dus geen status of monitoring endpoints meer te bevragen. Dit zorgt voor een snellere afhandeling en voorkomt circular calls die alles vertragen en uiteindelijk timeouts zouden kunnen geven. 
-
-#### Voorzie een HTTP response time mee in de logging (O)
-
-Logging (via middleware) van alle inkomende requests en afgeronde requests (en bijbehorende timings) is geen overbodige luxe in een micro-service-omgeving. Ook het gebruik van een correlationId die doorgesluisd wordt doorheen inner calls naar andere API’s is een must om het verhaal van een call die van een afnemer komt, volledig te analyseren. 
-
-Het is een aanrader voor elke applicatie binnen Digipolis. 
-
-Zie voor een ASP .NET CORE voorbeeld van een project: https://bitbucket.antwerpen.be/projects/GDP/repos/gdp_common_aspnetcore/browse/src/GdpCommon/Logging/RequestLogMiddleware.cs
-
-## App
-### Upgrade naar de laatste versie van gebruikte technologieën (V)
+# App
+## Upgrade naar de laatste versie van gebruikte technologieën (V)
 
 Als er van technologieën een nieuwe versie wordt uitgebracht, bevat deze vaak verbeteringen in het kader van security, performantie, bugfixes etc. Het is daarom aangeraden zo snel mogelijk (na voldoende te testen) te upgraden naar de laatste versies. 
 Zolang de frameworks nog van security updates worden voorzien, is het geen absolute must om te upgraden. 
 
 Voor ASP .NET Core applicaties is het bijvoorbeeld heel relevant om zo snel mogelijk te upgraden naar de laatste versies van .net core (momenteel 2.2).
 
-### Overweeg het gebruik van toolboxen in applicaties (V)
+## Overweeg het gebruik van toolboxen in applicaties (V)
 
 Er zijn diverse toolboxen beschikbaar via https://github.com/digipolisantwerp 
 Het gebruik van toolboxen heeft voor- en nadelen. Het voordeel is dat er voor de ontwikkeling van een applicatie minder tijd moet gestoken worden in het aanmaken van code die regelmatig terugkeert (boilerplate code). 
@@ -173,7 +207,7 @@ Het nadeel is dat als een toolbox outdated is of een fout bevat, deze zich ook b
 Daarom raden we aan om bij het gebruik van een toolbox grondig na te denken over hoe deze zo nuttig mogelijk aan te wenden. Wat eventueel kan helpen is om de toolboxen te ‘forken’, zelf kleine aanpassingen te maken indien nodig en de verbeteringen vervolgens terug te geven aan de community.
 *Todo: review doen van de bestaande toolboxen + toolboxen aanbieden in nodejs (nu zijn deze vooral in .net beschikbaar)*
 
-### Analyseer thread starvation (V)
+## Analyseer thread starvation (V)
 
 Je wil voorkomen dat er code is die mogelijks [thread starvation](https://en.wikipedia.org/wiki/Starvation_(computer_science)) kan veroorzaken. Er zijn tools om dit voor jouw applicatie te onderzoeken. 
 
@@ -182,31 +216,31 @@ Met deze analyse is bij sommige projecten bijvoorbeeld aan het licht gekomen dat
 
 Een bron voor diagnose van thread starvation in PRD: https://blogs.msdn.microsoft.com/vancem/2018/10/16/diagnosing-net-core-threadpool-starvation-with-perfview-why-my-service-is-not-saturating-all-cores-or-seems-to-stall/ 
 
-### Maak gebruik van HTTP client factory (V)
+## Maak gebruik van HTTP client factory in dotnet (V)
 
 De lifecycle van een httpclient is vrij complex. Je kan een httpClient als singleton gebruiken zodat je deze niet telkens hoeft op te bouwen, MAAR dit wil ook zeggen dat bij DNS-wijziging van de achterliggende service, de HTTP-client dit niet zal detecteren en zal blijven falen tot de service is herstart. Het telkens opbouwen en afbreken van HttpClient is ook nefast aangezien het disposen van HTTPClients kan betekenen dat de onderliggende connectie gedurende een aantal seconden nog wordt vastgehouden voor deze wordt vrijgegegeven om opnieuw te gebruiken. De betere en standaard manier om HTTPClient te configureren en te gebruiken is via de HttpClientFactory die vanaf ASP .NET Core versie 2.1 beschikbaar is.
 https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests 
 Leuk hierbij is dat je typed clients kan maken die gevuld kunnen worden met hun eigen HttpMessageHandlers en configuratie en die eenvoudigweg geïnjecteerd kunnen worden. De lifecycle van de agents waar de HttpClient geïnjecteerd wordt is dan altijd transient! 
 Voorbeeld: https://bitbucket.antwerpen.be/projects/GDP/repos/bijlage_api_aspnetcore/browse/src/Digipolis.ABS.Bijlage.API/DependencyRegistration.cs 
 
-### Zorg voor continue execution door headers read (V)
+## Zorg voor continue execution door headers read (V)
 
 In .NET kun je kiezen om te wachten tot een volledige response van een HTTP-call is uitgelezen of je kan kiezen om als de headers (die eerst binnenkomen) gelezen zijn, reeds verder te gaan in de executie van de code. Dit versnelt de code aanzienlijk in het geval de content van een response niet uitgelezen dient te worden bij bijvoorbeeld een foutieve statuscode (die in een header zit).
 
 
-### Vergroot de performantie bij serialiseren en deserialiseren (UTF8JSON) (O)
+## Vergroot de performantie bij serialiseren en deserialiseren (UTF8JSON) (O)
 
 Als je applicatie veel gaat serialiseren en deserialiseren is het noodzakelijk dat het beste, het meest performante en meest efficiënte qua memory-consumption wordt gekozen. Hierbij is bijvoorbeeld gekeken naar Utf8Json. Zie: https://github.com/neuecc/Utf8Json
 
 *Serialisatie = het zodanig omzetten van een object dat dit geschikt wordt voor verzending of opslag op een sequentieel medium*
 
-### Gebruik streams ivm memory en performantie (O)
+## Gebruik streams ivm memory en performantie (O)
 
 Door gebruik te maken van disposable streams bij het opstellen van de request en het uitlezen van de response, garandeer je dat de memory consumption niet dramatisch verhoogt bij vele gelijktijdige requests. Ook de globale performantie is beter.
 
 *In computer science, a stream is a sequence of data elements made available over time. A stream can be thought of as items on a conveyor belt being processed one at a time rather than in large batches.*
 
-### Weeg de keus voor asynchrone werking af (O)
+## Weeg de keus voor asynchrone werking af (O)
 
 Een asynchrone werking zorgt ervoor dat er vanuit de aanroepende toepassing niet gewacht moet worden tot de uitvoering van de call klaar is (wat kan leiden tot een slechte user experience en mogelijk zelfs een time-out in de applicatie) maar dat de applicatie op de hoogte wordt gebracht zodra het antwoord gereed is. Voor onvermijdelijk langlopende API calls kan je best een asynchrone API aanbieden, door ontsluiting via events of door het gebruik van het HTTP 202 patroon. 
 
@@ -214,46 +248,53 @@ Bij het ontwikkelen van API’s is het belangrijk om de interne logica hiervan a
 
 Bij het aanspreken van een API vanuit je applicatie maak je best een bewuste afweging om wel of niet een (a)synchrone request te sturen en de user interface wel of niet te blokkeren tijdens de verwerking. Als er een kans is dat de verwerking van de request niet altijd onmiddellijk zal worden voltooid, is de asynchrone werking aangeraden. Maar deze brengt wel een extra complexiteit mee in de applicatie.
 
-### Bouw retry's in bij het aanspreken van onderliggende componenten (O)
+## Bouw retry's in bij het aanspreken van onderliggende componenten (O)
 
 Maakt je applicatie gebruik van andere componenten, zorg dan indien mogelijk dat er retry’s zijn ingebouwd. Als je in je applicatie een 502 of 503 terugkrijgt, zou je best automatisch een retry van de call doen.
 
 *To do: de uitwerking hiervan verder bekijken: Vragen we alle applicaties om dit zelf in te bouwen, of kan hiervoor een handreiking gedaan worden zoals een toolbox maken, het op gatewayniveau oplossen, tools aanbieden die dit probleem oplossen en integreren met de bestaande infrastructuur (zoals http://www.thepollyproject.org)?*
 
-### Less > more
-### Optimize/reduce db queries
+
+## Optimaliseer en beperk de database queries
 
 ![](./img/querysize.png)
 
 ![](./img/wildcardanduselessfilters.png)
 
 
-### Prevent loops
+## Voorkom overbodige http callls
 ![](./img/loopoverhttpcalls.png)
 
-### Async / queue
-### No base 64 attachments in entity & history …
-### Load data on initialization
-### Only fetch data once in BFF frontend
-### paging en archiving toevoegen
+## Maak gebruik van asynchrone verwerking waar mogelijk
 
-### Enkel ophalen wat nodig is
+queue
+
+## Voorkom blobs in uw datamodel
+
+No base 64 attachments in entity & history …
+
+## Laad data bij het opstarten van de applicatie ipv voor iedere request
+
+# Voorkom dat de SPA dubbele calls doet naar de BFF/API
+
+
+## Correcte paginatie voorzien en enkel ophalen wat nodig is
 ![](./img/gaps.png)
 
 
-### async tasks in sync architecture
+## Voorkom asynchrone handelingen in een in syncchrone architectuur
  
 ![](./img/gaps.png)
 ![](./img/depersonalize.png)
 
-### Ceph ipv digital assets
+## Maak gebruik van Ceph ipv digital assets
 
-### Auhtz v1
+## Auhtz: gebruik authz api versie > v2
 
 ![](./img/authzv1.png)
 
 
-### memory leaks
+## Voorkom memory leaks en voorzie gc indien nodig
 
 ![](./img/container_down.png)
 ![](./img/containerkilled.png)
@@ -263,17 +304,7 @@ Maakt je applicatie gebruik van andere componenten, zorg dan indien mogelijk dat
 
 
 
-
-
-
-
-
-
-
-
-
-
-## Database
+# Database
 ### Berekenen van connection pool settings (V)
 
 Wanneer `Maximum Pool Size` niet ingesteld wordt, zullen database operaties bij piekgebruik van de toepassing niet gequeued worden en zal de toepassing meer connecties proberen te openen dan mogelijk. Zodra je meer connecties probeert te maken dan toegelaten krijg je een fout. Door het gebruik van de connectionpool kun je zorgen voor een slimmer gebruik van het maximaal aantal toegelaten database connections. 
@@ -283,7 +314,7 @@ Een uitgebreide uitleg en werkwijze vind je hier: https://github.com/digipolisan
 
 
 
-###  slow query
+###  Voorkom trage queries
 ![](./img/slowquery.png)
 
 ![](./img/cpu_load.jpg)
@@ -292,20 +323,21 @@ Een uitgebreide uitleg en werkwijze vind je hier: https://github.com/digipolisan
 
 ![](./img/db_load_slow_queries.jpg)
 
-###  indexes(!)
+###  Indexen(!)
 Dit dashboard stelt de ontwikkelaar in staat om alle HTTP-calls van hun applicatie te onderzoeken.
 
-### Optimize/reduce db queries
 ### (distributed) cache
+
 ### Db backups comvault
 ### db connecties in lijn zetten met aantal gebruikte pods
 
+### query plan analyseren met EXPLAIN
 ### pgstats
 
 ![](./img/pg_stat_statements.jpg)
 
 
-## CI/CD
+# CI/CD
 ### Code quality control (V)
 
 Software quality control omvat een geheel aan methodieken om de kwaliteit van de code te bewaken. 
@@ -321,7 +353,7 @@ Controleer tijdens de projectuitvoer samen met de leverancier eens of er voldaan
 Af en toe gebeurt het dat ontwikkelaars met een actief docker netwerk op hun computer problemen ondervinden om bepaalde websites of systemen te raadplegen. De oplossing hiervoor vind je op https://wiki.antwerpen.be/Digipolis/index.php/Problemen_ontwikkelomgeving_bij_gebruik_van_docker 
 
 
-## Infra
+# Infrastructuur
 ### Gebruik de aanbevolen docker images (O)
 
 -   Gebruik zeker geen Alpine (ivm DNS issues), wel Debian
@@ -329,11 +361,11 @@ Af en toe gebeurt het dat ontwikkelaars met een actief docker netwerk op hun com
 
 Bij vragen of twijfel overleg je met het ALM team. 
 
-## Network
+## Netwerk
 
 ![](./img/netwerkverdeling.jpg)
 
-### Separate environments (haproxy)
+### Maak gebruik van de verschillende omgevingen (haproxy)
 ![](./img/latencybeforesharding.png)
 
 ![](./img/latencyapp-architectuur.png)
@@ -342,24 +374,9 @@ Bij vragen of twijfel overleg je met het ALM team.
 
 ![](./img/http_slow.jpg)
 
-### Internal communication vs ext vs apigw
+### Maak gebruik van internen, externe en api gateway dns'en
 
 
-
-
-
-### Redhat latency
-## Overige
-### Gebruik het stappenplan voor troubleshooting (O)
-
-Welke stappen kan een developer / projectteam zelf zetten bij probleemanalyse? En wat verwacht de organisatie van een projectteam, voordat er een multidisciplinair team wordt samengesteld om een probleem breder te onderzoeken? 
-
-Zie stappenplan: https://docs.google.com/document/d/1GBcZdBj-nMdlAyn2WYYomvmV2kjwNIkTCtPhwfEofzM/edit?usp=sharing 
-
-Aandachtspunten bij troubleshooting: 
--   Infrastructuurtekening inclusief alle koppelingen 
--   Uittekenen van de flow van calls die het probleem veroorzaakt
--   Reproduceerbaar scenario
 
 
 
