@@ -19,18 +19,18 @@
 - [Document historiek](#document-historiek)
 - [Stappenplan](#stappenplan)
 - [Tools](#tools)
-  - [Gebruik het Splunk Dashboard voor http troubleshooting (V)](#gebruik-het-splunk-dashboard-voor-http-troubleshooting-v)
-  - [Gebruik het Kibana CheckMk Dashboard voor applicatie log troubleshooting (V)](#gebruik-het-kibana-checkmk-dashboard-voor-applicatie-log-troubleshooting-v)
+  - [Gebruik het Splunk Dashboard voor HTTP troubleshooting (V)](#gebruik-het-splunk-dashboard-voor-http-troubleshooting-v)
+  - [Gebruik het CheckMk Dashboard voor applicatie log troubleshooting (V)](#gebruik-het-checkmk-dashboard-voor-applicatie-log-troubleshooting-v)
   - [Gebruik het Sysdig Elastic Dashboard voor container troubleshooting (V)](#gebruik-het-sysdig-elastic-dashboard-voor-container-troubleshooting-v)
   - [Gebruik het APM Elastic Dashboard voor performantie troubleshooting (V)](#gebruik-het-apm-elastic-dashboard-voor-performantie-troubleshooting-v)
 - [Monitoring](#monitoring)
   - [Implementatie van health checks (V)](#implementatie-van-health-checks-v)
-    - [Enkele tips bij het implementeren van health checks](#enkele-tips-bij-het-implementeren-van-health-checks)
+    - [Enkele tips bij het implementeren van health checks (O)](#enkele-tips-bij-het-implementeren-van-health-checks-o)
     - [Voorzie een HTTP response time mee in de logging (O)](#voorzie-een-http-response-time-mee-in-de-logging-o)
   - [Stel liveness en readiness probes in (V)](#stel-liveness-en-readiness-probes-in-v)
 - [Logging](#logging)
   - [Kies bewust wat er wel en niet gelogd wordt (V)](#kies-bewust-wat-er-wel-en-niet-gelogd-wordt-v)
-- [App](#app)
+- [Applicatie](#applicatie)
   - [Upgrade naar de laatste versie van gebruikte technologieën (V)](#upgrade-naar-de-laatste-versie-van-gebruikte-technologie%C3%ABn-v)
   - [Overweeg het gebruik van toolboxen in applicaties (V)](#overweeg-het-gebruik-van-toolboxen-in-applicaties-v)
   - [Analyseer thread starvation (V)](#analyseer-thread-starvation-v)
@@ -40,36 +40,30 @@
   - [Gebruik streams ivm memory en performantie (O)](#gebruik-streams-ivm-memory-en-performantie-o)
   - [Weeg de keus voor asynchrone werking af (O)](#weeg-de-keus-voor-asynchrone-werking-af-o)
   - [Bouw retry's in bij het aanspreken van onderliggende componenten (O)](#bouw-retrys-in-bij-het-aanspreken-van-onderliggende-componenten-o)
-  - [Less > more](#less--more)
-  - [Optimaliseer en beperk de database queries](#optimaliseer-en-beperk-de-database-queries)
-  - [Voorkom overbodige http callls](#voorkom-overbodige-http-callls)
-  - [Maak gebruik van asynchrone verwerking waar mogelijk](#maak-gebruik-van-asynchrone-verwerking-waar-mogelijk)
-  - [Voorkom blobs aan data in uw model](#voorkom-blobs-aan-data-in-uw-model)
-  - [Laad data bij het opstarten van de applicatie ipv voor iedere request](#laad-data-bij-het-opstarten-van-de-applicatie-ipv-voor-iedere-request)
-- [Voorkom dat de SPA dubbele calls doet naar de BFF/API](#voorkom-dat-de-spa-dubbele-calls-doet-naar-de-bffapi)
-  - [Correcte paginatie voorzien en enkel ophalen wat nodig is](#correcte-paginatie-voorzien-en-enkel-ophalen-wat-nodig-is)
-  - [Voorkom asynchrone handelingen in een in syncchrone architectuur](#voorkom-asynchrone-handelingen-in-een-in-syncchrone-architectuur)
-  - [Maak gebruik van Ceph ipv digital assets](#maak-gebruik-van-ceph-ipv-digital-assets)
-  - [Auhtz: gebruik authz api versie > v2](#auhtz-gebruik-authz-api-versie--v2)
-  - [Voorkom memory leaks en voorzie gc indien nodig](#voorkom-memory-leaks-en-voorzie-gc-indien-nodig)
+  - [Voorkom overbodige http callls (V)](#voorkom-overbodige-http-callls-v)
+  - [Voorkom blobs in het datamodel (V)](#voorkom-blobs-in-het-datamodel-v)
+  - [Laad data bij het opstarten van de applicatie ipv voor iedere request (O)](#laad-data-bij-het-opstarten-van-de-applicatie-ipv-voor-iedere-request-o)
+  - [Voorkom dat de SPA dubbele calls doet naar de BFF/API (V)](#voorkom-dat-de-spa-dubbele-calls-doet-naar-de-bffapi-v)
+  - [Verwerk de asynchrone berichten op andere infrastructuur dan de API (V)](#verwerk-de-asynchrone-berichten-op-andere-infrastructuur-dan-de-api-v)
+  - [Maak gebruik van Ceph ipv digital assets (O)](#maak-gebruik-van-ceph-ipv-digital-assets-o)
+  - [Authz: gebruik authz api versie > v2 (V)](#authz-gebruik-authz-api-versie--v2-v)
+  - [Voorkom memory leaks en voorzie gc indien nodig (V)](#voorkom-memory-leaks-en-voorzie-gc-indien-nodig-v)
 - [Database](#database)
-    - [Berekenen van connection pool settings (V)](#berekenen-van-connection-pool-settings-v)
-    - [Voorkom trage queries](#voorkom-trage-queries)
-    - [Indexen(!)](#indexen)
-    - [(distributed) cache](#distributed-cache)
-    - [Db backups comvault](#db-backups-comvault)
-    - [db connecties in lijn zetten met aantal gebruikte pods](#db-connecties-in-lijn-zetten-met-aantal-gebruikte-pods)
-    - [query plan analyseren met EXPLAIN](#query-plan-analyseren-met-explain)
-    - [pgstats](#pgstats)
+  - [Berekenen van connection pool settings (V)](#berekenen-van-connection-pool-settings-v)
+  - [Optimaliseer en beperk de database queries (V)](#optimaliseer-en-beperk-de-database-queries-v)
+  - [Voorkom rage queries (V)](#voorkom-rage-queries-v)
+    - [Een specifieke query is traag](#een-specifieke-query-is-traag)
+    - [Alle queries zijn traag](#alle-queries-zijn-traag)
+  - [pgstats (O)](#pgstats-o)
 - [CI/CD](#cicd)
-    - [Code quality control (V)](#code-quality-control-v)
-    - [Controleer de (technische) afspraken uit QG1 en 2 (V)](#controleer-de-technische-afspraken-uit-qg1-en-2-v)
-    - [Problemen oplossen ontwikkelomgeving bij gebruik docker (O)](#problemen-oplossen-ontwikkelomgeving-bij-gebruik-docker-o)
+  - [Code quality control (V)](#code-quality-control-v)
+  - [Controleer de (technische) afspraken uit QG1 en 2 (V)](#controleer-de-technische-afspraken-uit-qg1-en-2-v)
+  - [Problemen oplossen ontwikkelomgeving bij gebruik docker (O)](#problemen-oplossen-ontwikkelomgeving-bij-gebruik-docker-o)
 - [Infrastructuur](#infrastructuur)
-    - [Gebruik de aanbevolen docker images (O)](#gebruik-de-aanbevolen-docker-images-o)
+  - [Gebruik de aanbevolen docker images (O)](#gebruik-de-aanbevolen-docker-images-o)
   - [Netwerk](#netwerk)
-    - [Maak gebruik van de verschillende omgevingen (haproxy)](#maak-gebruik-van-de-verschillende-omgevingen-haproxy)
-    - [Maak gebruik van internen, externe en api gateway dns'en](#maak-gebruik-van-internen-externe-en-api-gateway-dnsen)
+  - [Maak gebruik van de verschillende omgevingen (haproxy)](#maak-gebruik-van-de-verschillende-omgevingen-haproxy)
+  - [Maak gebruik van internen, externe en api gateway dns'en (O)](#maak-gebruik-van-internen-externe-en-api-gateway-dnsen-o)
 - [Nuttige links](#nuttige-links)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -107,7 +101,9 @@ Aandachtspunten bij troubleshooting:
 # Tools
 
 
-## Gebruik het Splunk Dashboard voor http troubleshooting (V)
+## Gebruik het Splunk Dashboard voor HTTP troubleshooting (V)
+
+* Splunk: https://splk-sh-01-00.antwerpen.be:8000/
 
 Dit dashboard stelt de ontwikkelaar in staat om alle HTTP-calls van hun applicatie te onderzoeken.
 
@@ -116,15 +112,17 @@ De belangrijkste metrics van een HTTP-call voor het bepalen van de gezondheid va
 Zie uitleg: https://wiki.antwerpen.be/Digipolis/index.php/Splunk_(Ontwikkelaars) 
 en de presentatie die gegeven is op de Tech guild bijeenkomst van 21/3/2019: https://docs.google.com/presentation/d/17ahE8aA7iDEL8elM2WGknYA2AyDxBbgBz1VMrpS-r1I/edit?usp=sharing
 
-* Splunk: https://splk-sh-01-00.antwerpen.be:8000/
+
 
 ## Gebruik het CheckMk Dashboard voor applicatie log troubleshooting (V)
+
+* CheckMK: http://checkmonitor.antwerpen.be/sst
 
 Via CheckMk kan men een overzicht krijgen op de Digipolis infrastructuur. Via CheckMk zijn oa de details van de vm's consulteerbaar.
 
 Ook kan je er meer detail vinden over de "health" checks die gebruikt worden op het status dashboard en de PostgreSQL database (servers).
 
-* CheckMK: http://checkmonitor.antwerpen.be/sst
+
 
 ## Gebruik het Sysdig Elastic Dashboard voor container troubleshooting (V)
 
@@ -134,17 +132,17 @@ Op de OpenShift infrastructuur kan je gebruik maken van Sysdig om meer inzicht t
   
 ## Gebruik het APM Elastic Dashboard voor performantie troubleshooting (V)
 
-Een APM tool is een van de betere oplossingen om performantie problemen te achterhalen. Als er APM instrumentation voorzien is in de verschillende componenten krijgt men een heel duidelijk overzicht van de flow die er binnen een bepaald proces plaatsvindt.
-
-Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is of dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur.
-
-
 * ECE APM: https://c1e1b93ef8c84abb95bd76158f0fa25b.elastic.antwerpen.be:9243/app/apm
 
+Een APM tool is een van de betere oplossingen om performantie problemen te achterhalen. Als er APM instrumentation voorzien is in de verschillende componenten krijgt men een heel duidelijk visueel overzicht van de flow die er binnen een bepaald proces plaatsvindt.
 
+Problemen die je via APM eenvoudig kan detecteren:
+* trage queries / http requests
+* aantal queries / http calls
+* geen optimale code zoals zaken afhandelen in loops etc
+* cpu belasting van het systeem (gaps tussen apm items)
 
-
-
+Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is of dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur.
 
 
 
@@ -161,7 +159,7 @@ Momenteel wordt er voor de dashboarding en alerting gebruik gemaakt van Check_Mk
 
 Voor de implementatie van de health checks is er een nieuwe standaard in de maak die beter aansluit op het gebruik van liveness en readiness probes. De (work in progress) informatie vind je hier: https://github.com/digipolisantwerpdocumentation/status-monitoring 
 
-### Enkele tips bij het implementeren van health checks
+### Enkele tips bij het implementeren van health checks (O)
 
 -   Zet de juiste beveiliging op de endpoints (ze moeten snel uitgevoerd kunnen worden)
 
@@ -202,7 +200,7 @@ Uitleg over hoe je het best de loglevels instelt, incl verwijzingen naar voorbee
 
 
 
-# App
+# Applicatie
 ## Upgrade naar de laatste versie van gebruikte technologieën (V)
 
 Als er van technologieën een nieuwe versie wordt uitgebracht, bevat deze vaak verbeteringen in het kader van security, performantie, bugfixes etc. Het is daarom aangeraden zo snel mogelijk (na voldoende te testen) te upgraden naar de laatste versies. 
@@ -268,21 +266,10 @@ Maakt je applicatie gebruik van andere componenten, zorg dan indien mogelijk dat
 *To do: de uitwerking hiervan verder bekijken: Vragen we alle applicaties om dit zelf in te bouwen, of kan hiervoor een handreiking gedaan worden zoals een toolbox maken, het op gatewayniveau oplossen, tools aanbieden die dit probleem oplossen en integreren met de bestaande infrastructuur (zoals http://www.thepollyproject.org)?*
 
 
-## Optimaliseer en beperk de database queries
-
-Hoewel databanken ontworpen zijn om snel en performante data te kunnen opvragen is het toch altijd aangewezen om deze zo min mogelijk te belasten.
-
-* Beperk het aantal rijen dat er by default wordt teruggegeven. In onderstaand voorbeeld werden er 500 records opgehaald terwijl er maar max 50 getoond werden. In de praktijk werd er voor ieder API call +3MB naar de frontend verzonden en werden er 450 items verwerkt die niet gebruikt werden.
-* Beperk het aantal queries. Vaak zijn er applicaties die enorm veel kleine/snelle queries doen die onder load wel eens problemen kunnen geven.
-* Optimaliseer uw queries zodat deze zo performant mogelijk geschreven zijn. Analyseer hiervoor "het query plan". 
-* Voornamelijk bij grote volatiele datasets met complexe queries/joins kan het interessant zijn om delen van de data vanuit de applicatie apart op te halen en te cachen.
-* Als de trage queries veroorzaakt worden door de hoeveelheid aan data kan er ook voor gekozen worden om de oudere data te archiveren of een vorm van sharding te voorzien.
 
 
-![](./img/wildcardanduselessfilters.png)
 
-
-## Voorkom overbodige http callls
+## Voorkom overbodige http callls (V)
 
 Beperkt het aantal http calls aangezien deze veel overhead geven in de afhandeling van de request. In onderstaande APM screenshot kan je zien dat er eerst een call gebeurd om een lijst op te halen waarvoor er dan voor ieder item een nieuwe call gebeurd om de detail op te halen.
 
@@ -290,13 +277,9 @@ In dit scenario zou het interessanter zijn om slechts 1 http request te doen die
 
 ![](./img/loopoverhttpcalls.png)
 
-## Maak gebruik van asynchrone verwerking waar mogelijk
 
-Vaak wordt een proces volledig sequentieel opgezet waardoor het in totaliteit lang kan duren onder belasting, daarom is het aangewezen om een asynchrone architectuur te implementeren waar het relevant is.
 
-...
-
-## Voorkom blobs in uw datamodel
+## Voorkom blobs in het datamodel (V)
 
 Bewaar de attachments van bijvoorbeeld een dossier in een aparte entiteit.
 
@@ -304,10 +287,11 @@ Zo voorkom je bij CRUD operaties dat de binaire data voor vertraging gaat zorgen
 
 Vaak worden er ook revisies bijgehouden waardoor er wel wat diskspace verloren gaat aan duplicaten van deze attachments.
 
-## Laad data bij het opstarten van de applicatie ipv voor iedere request
+## Laad data bij het opstarten van de applicatie ipv voor iedere request (O)
 
 Het komt vaak voor dat er in de verwerking van een API request data wordt opgehaald (query/http) die voor iedere request hetzelfde is. Hierbij is het aangewezen om deze data te cachen of in te laden bij het opstarten van de applicatie.
-# Voorkom dat de SPA dubbele calls doet naar de BFF/API
+
+## Voorkom dat de SPA dubbele calls doet naar de BFF/API (V)
 
 Bij verschillende projecten hebben we gemerkt dat er onbewust meerdere calls vanuit de SPA vertrekken om dezelfde data op te halen.
 
@@ -317,29 +301,29 @@ Hiervoor waren er voornamelijk 2 oorzaken:
 * In de componenten werd er niet nauwkeurig omgesprongen met de http calls waardoor er onbewust meerdere identieke calls naar de backend vertrokken. Dit is vaak te wijten aan het rerenderen van een component door niet relevante state changes.
 
 
-## Verwerk de asynchrone berichten op andere infrastructuur dan de API
+## Verwerk de asynchrone berichten op andere infrastructuur dan de API (V)
 
 Indien je sommige taken uit een API request verplaatst naar een achterliggende (async) verwerking is het aangewezen om deze jobs niet af te handelen in dezelfde runtime/container als de API zelf.
 
 Hiervoor kan je:
 * Een apart project opzetten om deze jobs/events af te handelen.
-* In uw project een extra console applicatie voorzien die de afhandendeling van de jobs op zich neemt. In de AppConfig configuratie kan je het commando om deze console applicatie uit te voeren dan ingeven onder de "worker" configuratie. Deze opzet zorgt ervoor dat tijdens de deployment er 2(default) API containers gedeployed worden en 1 worker container.
+* In het project een extra console applicatie voorzien die de afhandendeling van de jobs op zich neemt. In de AppConfig configuratie kan je het commando om deze console applicatie uit te voeren dan ingeven onder de "worker" configuratie. Deze opzet zorgt ervoor dat tijdens de deployment er 2(default) API containers gedeployed worden en 1 worker container.
 
 
-## Maak gebruik van Ceph ipv digital assets
-
-Indien uw applicatie intensief gebruikt maakt van assets kan het interessanter zijn om de bestanden op een ceph s3-compatible object storage te bewaren.
+## Maak gebruik van Ceph ipv digital assets (O)
+ 
+Indien de applicatie intensief gebruikt maakt van assets kan het interessanter zijn om de bestanden op een ceph s3-compatible object storage te bewaren.
 
 Een voordeel van deze opzet kan ook zijn dat, indien er geen ACL van toepassing is, deze assets ook rechtstreeks ontsloten kunnen worden vanuit de S3 bucket.
 
-## Authz: gebruik authz api versie > v2
+## Authz: gebruik authz api versie > v2 (V)
 
 De Authz v1 services draait op deprecated infrastructuur. In verschillende taskforces is naarboven gekomen dat de v1 responsetijden ~x5 trager zijn dan >=v2.
 
 ![](./img/authzv1.png)
 
 
-## Voorkom memory leaks en voorzie gc indien nodig
+## Voorkom memory leaks en voorzie gc indien nodig (V)
 
 Bij sommige projecten zien we onderstaande memory patroon. Het geheugen loopt op tot de limiet die is ingesteld voor de container en deze container wordt dan automatisch herstart.
 
@@ -347,7 +331,7 @@ Bij sommige projecten zien we onderstaande memory patroon. Het geheugen loopt op
 
 Dit kan voorkomen worden door geen memory leaks te schrijven :)
 * Ga nauwkeurig om met data die je in het geheugen bewaard zonder deze te deleten/expiren (bv cache)
-* Als uw toepassing veel data moet verwerken is het aangewezen om deze "in meerdere kleine stappen" te verwerken of te opteren voor een asynchrone verwerking.
+* Als de toepassing veel data moet verwerken is het aangewezen om deze "in meerdere kleine stappen" te verwerken of te opteren voor een asynchrone verwerking.
 * Zorg ervoor dat garbage collection actief is en optimaal geconfigureerd is.
 
 
@@ -355,18 +339,29 @@ Dit kan voorkomen worden door geen memory leaks te schrijven :)
 
 
 # Database
-### Berekenen van connection pool settings (V)
+## Berekenen van connection pool settings (V)
 
 Wanneer `Maximum Pool Size` niet ingesteld wordt, zullen database operaties bij piekgebruik van de toepassing niet gequeued worden en zal de toepassing meer connecties proberen te openen dan mogelijk. Zodra je meer connecties probeert te maken dan toegelaten krijg je een fout. Door het gebruik van de connectionpool kun je zorgen voor een slimmer gebruik van het maximaal aantal toegelaten database connections. 
 
 Een uitgebreide uitleg en werkwijze vind je hier: https://github.com/digipolisantwerpdocumentation/best-practices/blob/master/CalculateConnectionPoolSettings.md
 
 
+## Optimaliseer en beperk de database queries (V)
+
+Hoewel databanken ontworpen zijn om snel en performante data te kunnen opvragen is het toch altijd aangewezen om deze zo min mogelijk te belasten.
+
+* Beperk het aantal rijen dat er by default wordt teruggegeven. In onderstaand voorbeeld werden er 500 records opgehaald terwijl er maar max 50 getoond werden. In de praktijk werd er voor ieder API call +3MB naar de frontend verzonden en werden er 450 items verwerkt die niet gebruikt werden.
+* Beperk het aantal queries. Vaak zijn er applicaties die enorm veel kleine/snelle queries doen die onder load wel eens problemen kunnen geven.
+* Optimaliseer de queries zodat deze zo performant mogelijk geschreven zijn. Analyseer hiervoor "het query plan". 
+* Voornamelijk bij grote volatiele datasets met complexe queries/joins kan het interessant zijn om delen van de data vanuit de applicatie apart op te halen en te cachen.
+* Als de trage queries veroorzaakt worden door de hoeveelheid aan data kan er ook voor gekozen worden om de oudere data te archiveren of een vorm van sharding te voorzien.
 
 
-###  Trage queries
+![](./img/wildcardanduselessfilters.png)
 
-#### Een specifieke query is traag
+##  Voorkom rage queries (V)
+
+### Een specifieke query is traag
 
 Indien 1 query consistent traag is komt dit waarschijnlijk doordat:
 
@@ -378,7 +373,7 @@ Indien 1 query consistent traag is komt dit waarschijnlijk doordat:
 Via een EXPLAIN query kan je het query plan analyseren om zo de bottleneck te vinden.
 
 ![](./img/slowquery.png)
-#### Alle queries zijn traag
+### Alle queries zijn traag
 
 Wanneer alle queries traag zijn is dit vermoedelijk te wijten aan de database/netwerk infrastructuur.
 
@@ -392,29 +387,29 @@ Zoals je in onderstaande grafiek kan zien zijn er "CPU load" spikes > 6 terwijl 
 ![](./img/db_load.png)
 
 
-### pgstats
+## pgstats (O)
 
 ![](./img/pg_stat_statements.jpg)
 
 
 # CI/CD
-### Code quality control (V)
+## Code quality control (V)
 
 Software quality control omvat een geheel aan methodieken om de kwaliteit van de code te bewaken. 
 Via het Smartops lab wordt bekeken hoe we de code quality control kunnen automatiseren en standaard meenemen in het ontwikkelproces. Intussen is het aangewezen om hiervoor in je projectteam aandacht voor te hebben, zowel bij eigen ontwikkeling als ontwikkeling door de leverancier van een challenge. 
 Zorg voor code reviews door ontwikkelaars of applicatie-architecten, doe eens aan pair programming, zorg voor code die herbruikbaar is voor andere projecten, etc.
 
-### Controleer de (technische) afspraken uit QG1 en 2 (V)
+## Controleer de (technische) afspraken uit QG1 en 2 (V)
 
 Controleer tijdens de projectuitvoer samen met de leverancier eens of er voldaan wordt aan de [technische specificaties](https://github.com/digipolisantwerpdocumentation/technische_specificaties) die in de offertevraag zijn meegegeven, en aan de technische afspraken die zijn vastgelegd op het project-trellokaartje in [Quality Gate 2](https://trello.com/b/limU7MkC/quality-gates-20), bijvoorbeeld de architecturale opzet en de Ops criteria zoals zero downtime deployment, monitoring etc.
 
-### Problemen oplossen ontwikkelomgeving bij gebruik docker (O)
+## Problemen oplossen ontwikkelomgeving bij gebruik docker (O)
 
 Af en toe gebeurt het dat ontwikkelaars met een actief docker netwerk op hun computer problemen ondervinden om bepaalde websites of systemen te raadplegen. De oplossing hiervoor vind je op https://wiki.antwerpen.be/Digipolis/index.php/Problemen_ontwikkelomgeving_bij_gebruik_van_docker 
 
 
 # Infrastructuur
-### Gebruik de aanbevolen docker images (O)
+## Gebruik de aanbevolen docker images (O)
 
 -   Gebruik zeker geen Alpine (ivm DNS issues), wel Debian
 -   Gebruik bij voorkeur Red Hat images (ivm support) - Digipolis heeft daar intern nog weinig ervaring mee, maar zou die ervaring graag opbouwen
@@ -425,7 +420,7 @@ Bij vragen of twijfel overleg je met het ALM team.
 
 ![](./img/netwerkverdeling.jpg)
 
-### Maak gebruik van de verschillende omgevingen (haproxy)
+## Maak gebruik van de verschillende omgevingen (haproxy)
 ![](./img/latencybeforesharding.png)
 
 ![](./img/latencyapp-architectuur.png)
@@ -434,7 +429,7 @@ Bij vragen of twijfel overleg je met het ALM team.
 
 ![](./img/http_slow.jpg)
 
-### Maak gebruik van internen, externe en api gateway dns'en
+## Maak gebruik van internen, externe en api gateway dns'en (O)
 
 
 
