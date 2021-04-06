@@ -118,15 +118,26 @@ en de presentatie die gegeven is op de Tech guild bijeenkomst van 21/3/2019: htt
 
 * Splunk: https://splk-sh-01-00.antwerpen.be:8000/
 
-## Gebruik het Kibana CheckMk Dashboard voor applicatie log troubleshooting (V)
+## Gebruik het CheckMk Dashboard voor applicatie log troubleshooting (V)
+
+Via CheckMk kan men een overzicht krijgen op de Digipolis infrastructuur. Via CheckMk zijn oa de details van de vm's consulteerbaar.
+
+Ook kan je er meer detail vinden over de "health" checks die gebruikt worden op het status dashboard en de PostgreSQL database (servers).
 
 * CheckMK: http://checkmonitor.antwerpen.be/sst
 
 ## Gebruik het Sysdig Elastic Dashboard voor container troubleshooting (V)
 
+Op de OpenShift infrastructuur kan je gebruik maken van Sysdig om meer inzicht te krijgen over de containers. Hier kan je bijvoorbeeld netwerk connectiviteit, cpu/ram etc opvolgen voor een container of node.
+
 * Sysdig: https://app.sysdigcloud.com/
   
 ## Gebruik het APM Elastic Dashboard voor performantie troubleshooting (V)
+
+Een APM tool is een van de betere oplossingen om performantie problemen te achterhalen. Als er APM instrumentation voorzien is in de verschillende componenten krijgt men een heel duidelijk overzicht van de flow die er binnen een bepaald proces plaatsvindt.
+
+Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is of dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur.
+
 
 * ECE APM: https://c1e1b93ef8c84abb95bd76158f0fa25b.elastic.antwerpen.be:9243/app/apm
 
@@ -216,6 +227,8 @@ Met deze analyse is bij sommige projecten bijvoorbeeld aan het licht gekomen dat
 
 Een bron voor diagnose van thread starvation in PRD: https://blogs.msdn.microsoft.com/vancem/2018/10/16/diagnosing-net-core-threadpool-starvation-with-perfview-why-my-service-is-not-saturating-all-cores-or-seems-to-stall/ 
 
+![](./img/gaps.png)
+
 ## Maak gebruik van HTTP client factory in dotnet (V)
 
 De lifecycle van een httpclient is vrij complex. Je kan een httpClient als singleton gebruiken zodat je deze niet telkens hoeft op te bouwen, MAAR dit wil ook zeggen dat bij DNS-wijziging van de achterliggende service, de HTTP-client dit niet zal detecteren en zal blijven falen tot de service is herstart. Het telkens opbouwen en afbreken van HttpClient is ook nefast aangezien het disposen van HTTPClients kan betekenen dat de onderliggende connectie gedurende een aantal seconden nog wordt vastgehouden voor deze wordt vrijgegegeven om opnieuw te gebruiken. De betere en standaard manier om HTTPClient te configureren en te gebruiken is via de HttpClientFactory die vanaf ASP .NET Core versie 2.1 beschikbaar is.
@@ -257,48 +270,85 @@ Maakt je applicatie gebruik van andere componenten, zorg dan indien mogelijk dat
 
 ## Optimaliseer en beperk de database queries
 
-![](./img/querysize.png)
+Hoewel databanken ontworpen zijn om snel en performante data te kunnen opvragen is het toch altijd aangewezen om deze zo min mogelijk te belasten.
+
+* Beperk het aantal rijen dat er by default wordt teruggegeven. In onderstaand voorbeeld werden er 500 records opgehaald terwijl er maar max 50 getoond werden. In de praktijk werd er voor ieder API call +3MB naar de frontend verzonden en werden er 450 items verwerkt die niet gebruikt werden.
+* Beperk het aantal queries. Vaak zijn er applicaties die enorm veel kleine/snelle queries doen die onder load wel eens problemen kunnen geven.
+* Optimaliseer uw queries zodat deze zo performant mogelijk geschreven zijn. Analyseer hiervoor "het query plan". 
+* Voornamelijk bij grote volatiele datasets met complexe queries/joins kan het interessant zijn om delen van de data vanuit de applicatie apart op te halen en te cachen.
+* Als de trage queries veroorzaakt worden door de hoeveelheid aan data kan er ook voor gekozen worden om de oudere data te archiveren of een vorm van sharding te voorzien.
+
 
 ![](./img/wildcardanduselessfilters.png)
 
 
 ## Voorkom overbodige http callls
+
+Beperkt het aantal http calls aangezien deze veel overhead geven in de afhandeling van de request. In onderstaande APM screenshot kan je zien dat er eerst een call gebeurd om een lijst op te halen waarvoor er dan voor ieder item een nieuwe call gebeurd om de detail op te halen.
+
+In dit scenario zou het interessanter zijn om slechts 1 http request te doen die alle id's bevat.
+
 ![](./img/loopoverhttpcalls.png)
 
 ## Maak gebruik van asynchrone verwerking waar mogelijk
 
-queue
+Vaak wordt een proces volledig sequentieel opgezet waardoor het in totaliteit lang kan duren onder belasting, daarom is het aangewezen om een asynchrone architectuur te implementeren waar het relevant is.
+
+...
 
 ## Voorkom blobs in uw datamodel
 
-No base 64 attachments in entity & history …
+Bewaar de attachments van bijvoorbeeld een dossier in een aparte entiteit.
+
+Zo voorkom je bij CRUD operaties dat de binaire data voor vertraging gaat zorgen. 
+
+Vaak worden er ook revisies bijgehouden waardoor er wel wat diskspace verloren gaat aan duplicaten van deze attachments.
 
 ## Laad data bij het opstarten van de applicatie ipv voor iedere request
 
+Het komt vaak voor dat er in de verwerking van een API request data wordt opgehaald (query/http) die voor iedere request hetzelfde is. Hierbij is het aangewezen om deze data te cachen of in te laden bij het opstarten van de applicatie.
 # Voorkom dat de SPA dubbele calls doet naar de BFF/API
 
+Bij verschillende projecten hebben we gemerkt dat er onbewust meerdere calls vanuit de SPA vertrekken om dezelfde data op te halen.
 
-## Correcte paginatie voorzien en enkel ophalen wat nodig is
-![](./img/gaps.png)
+Hiervoor waren er voornamelijk 2 oorzaken:
+
+* Er werd niet gewerkt met een "state store" waardoor iedere component de data opnieuw ging ophalen
+* In de componenten werd er niet nauwkeurig omgesprongen met de http calls waardoor er onbewust meerdere identieke calls naar de backend vertrokken. Dit is vaak te wijten aan het rerenderen van een component door niet relevante state changes.
 
 
-## Voorkom asynchrone handelingen in een in syncchrone architectuur
- 
-![](./img/gaps.png)
-![](./img/depersonalize.png)
+## Verwerk de asynchrone berichten op andere infrastructuur dan de API
+
+Indien je sommige taken uit een API request verplaatst naar een achterliggende (async) verwerking is het aangewezen om deze jobs niet af te handelen in dezelfde runtime/container als de API zelf.
+
+Hiervoor kan je:
+* Een apart project opzetten om deze jobs/events af te handelen.
+* In uw project een extra console applicatie voorzien die de afhandendeling van de jobs op zich neemt. In de AppConfig configuratie kan je het commando om deze console applicatie uit te voeren dan ingeven onder de "worker" configuratie. Deze opzet zorgt ervoor dat tijdens de deployment er 2(default) API containers gedeployed worden en 1 worker container.
+
 
 ## Maak gebruik van Ceph ipv digital assets
 
-## Auhtz: gebruik authz api versie > v2
+Indien uw applicatie intensief gebruikt maakt van assets kan het interessanter zijn om de bestanden op een ceph s3-compatible object storage te bewaren.
+
+Een voordeel van deze opzet kan ook zijn dat, indien er geen ACL van toepassing is, deze assets ook rechtstreeks ontsloten kunnen worden vanuit de S3 bucket.
+
+## Authz: gebruik authz api versie > v2
+
+De Authz v1 services draait op deprecated infrastructuur. In verschillende taskforces is naarboven gekomen dat de v1 responsetijden ~x5 trager zijn dan >=v2.
 
 ![](./img/authzv1.png)
 
 
 ## Voorkom memory leaks en voorzie gc indien nodig
 
-![](./img/container_down.png)
+Bij sommige projecten zien we onderstaande memory patroon. Het geheugen loopt op tot de limiet die is ingesteld voor de container en deze container wordt dan automatisch herstart.
+
 ![](./img/containerkilled.png)
 
+Dit kan voorkomen worden door geen memory leaks te schrijven :)
+* Ga nauwkeurig om met data die je in het geheugen bewaard zonder deze te deleten/expiren (bv cache)
+* Als uw toepassing veel data moet verwerken is het aangewezen om deze "in meerdere kleine stappen" te verwerken of te opteren voor een asynchrone verwerking.
+* Zorg ervoor dat garbage collection actief is en optimaal geconfigureerd is.
 
 
 
@@ -314,24 +364,34 @@ Een uitgebreide uitleg en werkwijze vind je hier: https://github.com/digipolisan
 
 
 
-###  Voorkom trage queries
+###  Trage queries
+
+#### Een specifieke query is traag
+
+Indien 1 query consistent traag is komt dit waarschijnlijk doordat:
+
+* er geen (correcte) indexen op de database aanwezig zijn
+* de query niet optimaal geschreven is (ORM?)
+* het datamodel té genormaliseerd is
+* er te veel data is waarbij het interessant is om oude data te archiveren of een vorm van sharding te voorzien
+
+Via een EXPLAIN query kan je het query plan analyseren om zo de bottleneck te vinden.
+
 ![](./img/slowquery.png)
+#### Alle queries zijn traag
 
-![](./img/cpu_load.jpg)
-
-![](./img/db_load.png)
+Wanneer alle queries traag zijn is dit vermoedelijk te wijten aan de database/netwerk infrastructuur.
 
 ![](./img/db_load_slow_queries.jpg)
 
-###  Indexen(!)
-Dit dashboard stelt de ontwikkelaar in staat om alle HTTP-calls van hun applicatie te onderzoeken.
+Indien dit fenomeen zich voordoet kan je via CheckMK de details van de database server opvragen. 
 
-### (distributed) cache
+Zoals je in onderstaande grafiek kan zien zijn er "CPU load" spikes > 6 terwijl de server zelf maar 6 cpu's heeft. Zulke spikes kunnen plaatsvinden wanneer de database gelocked wordt tijdens een backup(op recente db versies niet meer van toepassing) of wanneer er veel load is op een gedeelde db infrastructuur.
 
-### Db backups comvault
-### db connecties in lijn zetten met aantal gebruikte pods
 
-### query plan analyseren met EXPLAIN
+![](./img/db_load.png)
+
+
 ### pgstats
 
 ![](./img/pg_stat_statements.jpg)
