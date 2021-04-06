@@ -416,20 +416,32 @@ Af en toe gebeurt het dat ontwikkelaars met een actief docker netwerk op hun com
 
 Bij vragen of twijfel overleg je met het ALM team. 
 
-## Netwerk
+## Netwerk latency
 
-![](./img/netwerkverdeling.jpg)
 
-## Maak gebruik van de verschillende omgevingen (haproxy)
-![](./img/latencybeforesharding.png)
 
-![](./img/latencyapp-architectuur.png)
-![](./img/latencyapp.png)
+In onderstaande demo toepassing zie je dat er verschillende "http ping" requests vertrekken naar een andere service. Bij de eerste request zie je dat enorm veel tijd verloren gaat(rode balk) alvorens de request aankomt op de 2de service.
+
+Wanneer onderstaand fenomeen zich voordoet is dit waarschijnlijk te wijten aan het netwerk.
+
+
+
 ![](./img/latencyrandombeforesharding.png)
-
-![](./img/http_slow.jpg)
-
 ## Maak gebruik van internen, externe en api gateway dns'en (O)
+
+In onderstaand afbeelding krijg je een overzicht voor de gemiddelde responsetijden voor het oproepen van eenzelfde "http ping" service.
+
+* apigw: api gateway -> api-gw-p.antwerpen.be
+* ext: via de externe dns -> naam-app*-*.antwerpen.be
+* int: over het interne kubernetes netwerk -> containername:port
+
+Indien je gebruik maakt van een microservice architectuur is het aangewezen om de "int" DNS'en te gebruiken voor de interne communicatie tussen de componenten.
+
+![](./img/latencyapp.png)
+
+Ondertussen zijn er al tal van verbeteringen toegepast waardoor deze responsetijden in het algemeen lager zijn.
+
+
 
 
 
