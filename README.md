@@ -20,9 +20,11 @@
 - [Stappenplan](#stappenplan)
 - [Tools](#tools)
   - [Gebruik het Splunk Dashboard voor HTTP troubleshooting (V)](#gebruik-het-splunk-dashboard-voor-http-troubleshooting-v)
-  - [Gebruik het CheckMk Dashboard voor applicatie log troubleshooting (V)](#gebruik-het-checkmk-dashboard-voor-applicatie-log-troubleshooting-v)
-  - [Gebruik het Sysdig Elastic Dashboard voor container troubleshooting (V)](#gebruik-het-sysdig-elastic-dashboard-voor-container-troubleshooting-v)
-  - [Gebruik het APM Elastic Dashboard voor performantie troubleshooting (V)](#gebruik-het-apm-elastic-dashboard-voor-performantie-troubleshooting-v)
+  - [Gebruik het Kibana Dashboard voor applicatie log troubleshooting (V)](#gebruik-het-kibana-dashboard-voor-applicatie-log-troubleshooting-v)
+  - [Gebruik het Status Dashboard voor uptime troubleshooting (V)](#gebruik-het-status-dashboard-voor-uptime-troubleshooting-v)
+  - [Gebruik het CheckMk Dashboard voor VM troubleshooting (V)](#gebruik-het-checkmk-dashboard-voor-vm-troubleshooting-v)
+  - [Gebruik het Sysdig Dashboard voor container troubleshooting (V)](#gebruik-het-sysdig-dashboard-voor-container-troubleshooting-v)
+  - [Gebruik het APM  Dashboard voor performantie troubleshooting (V)](#gebruik-het-apm--dashboard-voor-performantie-troubleshooting-v)
 - [Monitoring](#monitoring)
   - [Implementatie van health checks (V)](#implementatie-van-health-checks-v)
     - [Enkele tips bij het implementeren van health checks (O)](#enkele-tips-bij-het-implementeren-van-health-checks-o)
@@ -48,22 +50,22 @@
   - [Maak gebruik van Ceph ipv digital assets (O)](#maak-gebruik-van-ceph-ipv-digital-assets-o)
   - [Authz: gebruik authz api versie > v2 (V)](#authz-gebruik-authz-api-versie--v2-v)
   - [Voorkom memory leaks en voorzie gc indien nodig (V)](#voorkom-memory-leaks-en-voorzie-gc-indien-nodig-v)
+  - [Implementeer SIGTERM events (V)](#implementeer-sigterm-events-v)
 - [Database](#database)
   - [Berekenen van connection pool settings (V)](#berekenen-van-connection-pool-settings-v)
   - [Optimaliseer en beperk de database queries (V)](#optimaliseer-en-beperk-de-database-queries-v)
-  - [Voorkom rage queries (V)](#voorkom-rage-queries-v)
+  - [Voorkom trage queries (V)](#voorkom-trage-queries-v)
     - [Een specifieke query is traag](#een-specifieke-query-is-traag)
     - [Alle queries zijn traag](#alle-queries-zijn-traag)
-  - [pgstats (O)](#pgstats-o)
+  - [Activeer database statistics (O)](#activeer-database-statistics-o)
 - [CI/CD](#cicd)
   - [Code quality control (V)](#code-quality-control-v)
   - [Controleer de (technische) afspraken uit QG1 en 2 (V)](#controleer-de-technische-afspraken-uit-qg1-en-2-v)
   - [Problemen oplossen ontwikkelomgeving bij gebruik docker (O)](#problemen-oplossen-ontwikkelomgeving-bij-gebruik-docker-o)
 - [Infrastructuur](#infrastructuur)
   - [Gebruik de aanbevolen docker images (O)](#gebruik-de-aanbevolen-docker-images-o)
-  - [Netwerk](#netwerk)
-  - [Maak gebruik van de verschillende omgevingen (haproxy)](#maak-gebruik-van-de-verschillende-omgevingen-haproxy)
-  - [Maak gebruik van internen, externe en api gateway dns'en (O)](#maak-gebruik-van-internen-externe-en-api-gateway-dnsen-o)
+  - [Netwerk latency](#netwerk-latency)
+  - [Maak gebruik van interne DNS'en waar mogelijk (O)](#maak-gebruik-van-interne-dnsen-waar-mogelijk-o)
 - [Nuttige links](#nuttige-links)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -103,7 +105,6 @@ Aandachtspunten bij troubleshooting:
 
 ## Gebruik het Splunk Dashboard voor HTTP troubleshooting (V)
 
-* Splunk: https://splk-sh-01-00.antwerpen.be:8000/
 
 Dit dashboard stelt de ontwikkelaar in staat om alle HTTP-calls van hun applicatie te onderzoeken.
 
@@ -114,35 +115,45 @@ en de presentatie die gegeven is op de Tech guild bijeenkomst van 21/3/2019: htt
 
 
 
-## Gebruik het CheckMk Dashboard voor applicatie log troubleshooting (V)
+## Gebruik het Kibana Dashboard voor applicatie log troubleshooting (V)
 
-* CheckMK: http://checkmonitor.antwerpen.be/sst
+Alle stdout logs van de Digipolis container infrastructuur komen automatisch terecht in Elastic. Via een Kibana dashboard kan je filteren op uw project en/of container waardoor je op een eenvoudige manier toegang hebt tot alle container logs.
 
-Via CheckMk kan men een overzicht krijgen op de Digipolis infrastructuur. Via CheckMk zijn oa de details van de vm's consulteerbaar.
+Ook kan je de logs eenvoudig filteren op keywords of er gestructureerd in zoeken indien je JSON logt naar stdout.
+
+## Gebruik het Status Dashboard voor uptime troubleshooting (V)
+
+Op het status dashboard van Antwerpen krijg je een overzicht van alle applicaties of API's waarvoor er healthchecks zijn opgezet. 
+
+Dit dashboard bevat honderden uptime checks en is vooral interessant om te achterhalen of een bepaalde service niet beschikbaar is omwille van een outage.
+
+## Gebruik het CheckMk Dashboard voor VM troubleshooting (V)
+
+Via CheckMk kan je een overzicht krijgen op de Digipolis infrastructuur. Deze tool is voornamelijk interessant als je meer inzicht wil krijgen op de VM infrastructuur.
 
 Ook kan je er meer detail vinden over de "health" checks die gebruikt worden op het status dashboard en de PostgreSQL database (servers).
 
 
+## Gebruik het Sysdig Dashboard voor container troubleshooting (V)
 
-## Gebruik het Sysdig Elastic Dashboard voor container troubleshooting (V)
+Via Sysdig kan je meer inzicht krijgen op de containers die gehost zijn op de Digipolis container infrastructuur.
 
-Op de OpenShift infrastructuur kan je gebruik maken van Sysdig om meer inzicht te krijgen over de containers. Hier kan je bijvoorbeeld netwerk connectiviteit, cpu/ram etc opvolgen voor een container of node.
+Hier kan je bijvoorbeeld netwerk connectiviteit, cpu/ram etc opvolgen voor een container of een node.
 
-* Sysdig: https://app.sysdigcloud.com/
-  
-## Gebruik het APM Elastic Dashboard voor performantie troubleshooting (V)
 
-* ECE APM: https://c1e1b93ef8c84abb95bd76158f0fa25b.elastic.antwerpen.be:9243/app/apm
 
-Een APM tool is een van de betere oplossingen om performantie problemen te achterhalen. Als er APM instrumentation voorzien is in de verschillende componenten krijgt men een heel duidelijk visueel overzicht van de flow die er binnen een bepaald proces plaatsvindt.
+## Gebruik het APM  Dashboard voor performantie troubleshooting (V)
+
+
+Een APM tool is een van de betere oplossingen om performantie problemen te analyseren. Als er APM instrumentation voorzien is in de verschillende componenten krijgt men een heel duidelijk visueel overzicht van de flow die er binnen een bepaald proces plaatsvindt.
 
 Problemen die je via APM eenvoudig kan detecteren:
-* trage queries / http requests
-* aantal queries / http calls
+* trage queries of http requests
+* aantal queries of http calls die een bepaalde component doet binnen 1 process
 * geen optimale code zoals zaken afhandelen in loops etc
 * cpu belasting van het systeem (gaps tussen apm items)
 
-Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is of dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur.
+Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is, dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur.
 
 
 
@@ -273,7 +284,7 @@ Maakt je applicatie gebruik van andere componenten, zorg dan indien mogelijk dat
 
 Beperkt het aantal http calls aangezien deze veel overhead geven in de afhandeling van de request. In onderstaande APM screenshot kan je zien dat er eerst een call gebeurd om een lijst op te halen waarvoor er dan voor ieder item een nieuwe call gebeurd om de detail op te halen.
 
-In dit scenario zou het interessanter zijn om slechts 1 http request te doen die alle id's bevat.
+In dit scenario zou het interessanter zijn om slechts enkele http request te doen die meerdere id's bevatten.
 
 ![](./img/loopoverhttpcalls.png)
 
@@ -281,11 +292,9 @@ In dit scenario zou het interessanter zijn om slechts 1 http request te doen die
 
 ## Voorkom blobs in het datamodel (V)
 
-Bewaar de attachments van bijvoorbeeld een dossier in een aparte entiteit.
+Bewaar de attachments van bijvoorbeeld een dossier nooit in het database model van het dossier zelf maar bewaar er een referentie naar de bron. Bij voorkeur worden de binaire files zelf op Ceph of de assets engine bewaard.
 
-Zo voorkom je bij CRUD operaties dat de binaire data voor vertraging gaat zorgen. 
-
-Vaak worden er ook revisies bijgehouden waardoor er wel wat diskspace verloren gaat aan duplicaten van deze attachments.
+Zo voorkom je bij CRUD operaties dat de binaire data voor vertraging gaat zorgen. Vaak worden er ook revisies bijgehouden van de entiteiten waardoor er wel wat diskspace verloren gaat aan duplicaten van deze attachments.
 
 ## Laad data bij het opstarten van de applicatie ipv voor iedere request (O)
 
@@ -298,7 +307,7 @@ Bij verschillende projecten hebben we gemerkt dat er onbewust meerdere calls van
 Hiervoor waren er voornamelijk 2 oorzaken:
 
 * Er werd niet gewerkt met een "state store" waardoor iedere component de data opnieuw ging ophalen
-* In de componenten werd er niet nauwkeurig omgesprongen met de http calls waardoor er onbewust meerdere identieke calls naar de backend vertrokken. Dit is vaak te wijten aan het rerenderen van een component door niet relevante state changes.
+* In de component werd er niet nauwkeurig omgesprongen met http calls waardoor er onbewust meerdere identieke calls naar de backend vertrokken. Dit is vaak te wijten aan het rerenderen van een component door niet relevante state changes.
 
 
 ## Verwerk de asynchrone berichten op andere infrastructuur dan de API (V)
@@ -307,14 +316,15 @@ Indien je sommige taken uit een API request verplaatst naar een achterliggende (
 
 Hiervoor kan je:
 * Een apart project opzetten om deze jobs/events af te handelen.
-* In het project een extra console applicatie voorzien die de afhandendeling van de jobs op zich neemt. In de AppConfig configuratie kan je het commando om deze console applicatie uit te voeren dan ingeven onder de "worker" configuratie. Deze opzet zorgt ervoor dat tijdens de deployment er 2(default) API containers gedeployed worden en 1 worker container.
+* In het project een extra console applicatie voorzien die de afhandendeling van de jobs op zich neemt. In de AppConfig configuratie kan je het commando om deze console applicatie uit te voeren dan ingeven onder de "worker" configuratie. Deze opzet zorgt ervoor dat tijdens de deployment er 2 API containers gedeployed worden(default) en 1 extra worker container. 
 
+Om berichten tussen de api en de worker uit te wisselen kan er gebruik worden gemaakt van Kafka.
 
 ## Maak gebruik van Ceph ipv digital assets (O)
  
 Indien de applicatie intensief gebruikt maakt van assets kan het interessanter zijn om de bestanden op een ceph s3-compatible object storage te bewaren.
 
-Een voordeel van deze opzet kan ook zijn dat, indien er geen ACL van toepassing is, deze assets ook rechtstreeks ontsloten kunnen worden vanuit de S3 bucket.
+Een voordeel van deze opzet kan ook zijn dat, indien er geen ACL van toepassing is, deze assets ook rechtstreeks ontsloten kunnen worden vanuit de S3 bucket waardoor de applicatie zelf ontlast wordt.
 
 ## Authz: gebruik authz api versie > v2 (V)
 
@@ -334,9 +344,11 @@ Dit kan voorkomen worden door geen memory leaks te schrijven :)
 * Als de toepassing veel data moet verwerken is het aangewezen om deze "in meerdere kleine stappen" te verwerken of te opteren voor een asynchrone verwerking.
 * Zorg ervoor dat garbage collection actief is en optimaal geconfigureerd is.
 
+## Implementeer SIGTERM events (V)
 
+Zorg ervoor dat uw applicatie om kan met SIGTERM events. Wanneer het container platform beslist om de container te stoppen is het aangewezen om de processen die lopen (background, http) eerst af te ronden inplaats van de container abrubt te stoppen.
 
-
+Deze aanpak zorgt ervoor dat de API request nog worden afgehandeld of dat er geen inconsistenties ontstaan indien de verwerking niet idempotent is.
 
 # Database
 ## Berekenen van connection pool settings (V)
@@ -350,7 +362,7 @@ Een uitgebreide uitleg en werkwijze vind je hier: https://github.com/digipolisan
 
 Hoewel databanken ontworpen zijn om snel en performante data te kunnen opvragen is het toch altijd aangewezen om deze zo min mogelijk te belasten.
 
-* Beperk het aantal rijen dat er by default wordt teruggegeven. In onderstaand voorbeeld werden er 500 records opgehaald terwijl er maar max 50 getoond werden. In de praktijk werd er voor ieder API call +3MB naar de frontend verzonden en werden er 450 items verwerkt die niet gebruikt werden.
+* Beperk het aantal rijen dat er by default wordt teruggegeven. In onderstaand voorbeeld werden er 500 records opgehaald terwijl er maar max 50 getoond werden. In de praktijk werd er voor ieder API call +3MB naar de frontend verzonden en werden er 450 items in de browser verwerkt die niet gebruikt werden.
 * Beperk het aantal queries. Vaak zijn er applicaties die enorm veel kleine/snelle queries doen die onder load wel eens problemen kunnen geven.
 * Optimaliseer de queries zodat deze zo performant mogelijk geschreven zijn. Analyseer hiervoor "het query plan". 
 * Voornamelijk bij grote volatiele datasets met complexe queries/joins kan het interessant zijn om delen van de data vanuit de applicatie apart op te halen en te cachen.
@@ -359,7 +371,7 @@ Hoewel databanken ontworpen zijn om snel en performante data te kunnen opvragen 
 
 ![](./img/wildcardanduselessfilters.png)
 
-##  Voorkom rage queries (V)
+##  Voorkom trage queries (V)
 
 ### Een specifieke query is traag
 
@@ -381,13 +393,17 @@ Wanneer alle queries traag zijn is dit vermoedelijk te wijten aan de database/ne
 
 Indien dit fenomeen zich voordoet kan je via CheckMK de details van de database server opvragen. 
 
-Zoals je in onderstaande grafiek kan zien zijn er "CPU load" spikes > 6 terwijl de server zelf maar 6 cpu's heeft. Zulke spikes kunnen plaatsvinden wanneer de database gelocked wordt tijdens een backup(op recente db versies niet meer van toepassing) of wanneer er veel load is op een gedeelde db infrastructuur.
+Zoals je in onderstaande grafiek kan zien zijn er "CPU load" spikes die hoger zijn dan 6 terwijl de server zelf maar 6 cpu's heeft. Zulke spikes kunnen plaatsvinden wanneer de database gelocked wordt tijdens een backup(op recente db versies niet meer van toepassing) of wanneer er bijvoorbeeld veel load is op een gedeelde db infrastructuur.
 
 
 ![](./img/db_load.png)
 
 
-## pgstats (O)
+## Activeer database statistics (O)
+
+Wanneer je meer inzicht wenst op alle queries die gebeuren op de database kan je, afhankelijk van de database, statistics activeren.
+
+Hierbij krijg je dan een overzicht van alle queries die er gebeuren met de gemiddelde en max response tijden.
 
 ![](./img/pg_stat_statements.jpg)
 
@@ -419,7 +435,6 @@ Bij vragen of twijfel overleg je met het ALM team.
 ## Netwerk latency
 
 
-
 In onderstaande demo toepassing zie je dat er verschillende "http ping" requests vertrekken naar een andere service. Bij de eerste request zie je dat enorm veel tijd verloren gaat(rode balk) alvorens de request aankomt op de 2de service.
 
 Wanneer onderstaand fenomeen zich voordoet is dit waarschijnlijk te wijten aan het netwerk.
@@ -427,7 +442,7 @@ Wanneer onderstaand fenomeen zich voordoet is dit waarschijnlijk te wijten aan h
 
 
 ![](./img/latencyrandombeforesharding.png)
-## Maak gebruik van internen, externe en api gateway dns'en (O)
+## Maak gebruik van interne DNS'en waar mogelijk (O)
 
 In onderstaand afbeelding krijg je een overzicht voor de gemiddelde responsetijden voor het oproepen van eenzelfde "http ping" service.
 
