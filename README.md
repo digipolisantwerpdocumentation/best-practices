@@ -24,7 +24,7 @@
   - [Gebruik het Status Dashboard voor uptime troubleshooting (V)](#gebruik-het-status-dashboard-voor-uptime-troubleshooting-v)
   - [Gebruik het CheckMk Dashboard voor VM troubleshooting (V)](#gebruik-het-checkmk-dashboard-voor-vm-troubleshooting-v)
   - [Gebruik het Sysdig Dashboard voor container troubleshooting (V)](#gebruik-het-sysdig-dashboard-voor-container-troubleshooting-v)
-  - [Gebruik het APM  Dashboard voor performantie troubleshooting (V)](#gebruik-het-apm--dashboard-voor-performantie-troubleshooting-v)
+  - [Gebruik het APM  Dashboard voor performantie troubleshooting (O)](#gebruik-het-apm--dashboard-voor-performantie-troubleshooting-o)
 - [Monitoring](#monitoring)
   - [Implementatie van health checks (V)](#implementatie-van-health-checks-v)
     - [Enkele tips bij het implementeren van health checks (O)](#enkele-tips-bij-het-implementeren-van-health-checks-o)
@@ -42,12 +42,12 @@
   - [Gebruik streams ivm memory en performantie (O)](#gebruik-streams-ivm-memory-en-performantie-o)
   - [Weeg de keus voor asynchrone werking af (O)](#weeg-de-keus-voor-asynchrone-werking-af-o)
   - [Bouw retry's in bij het aanspreken van onderliggende componenten (O)](#bouw-retrys-in-bij-het-aanspreken-van-onderliggende-componenten-o)
-  - [Voorkom overbodige http callls (V)](#voorkom-overbodige-http-callls-v)
+  - [Voorkom overbodige http calls (V)](#voorkom-overbodige-http-calls-v)
   - [Voorkom blobs in het datamodel (V)](#voorkom-blobs-in-het-datamodel-v)
   - [Laad data bij het opstarten van de applicatie ipv voor iedere request (O)](#laad-data-bij-het-opstarten-van-de-applicatie-ipv-voor-iedere-request-o)
   - [Voorkom dat de SPA dubbele calls doet naar de BFF/API (V)](#voorkom-dat-de-spa-dubbele-calls-doet-naar-de-bffapi-v)
   - [Verwerk de asynchrone berichten op andere infrastructuur dan de API (V)](#verwerk-de-asynchrone-berichten-op-andere-infrastructuur-dan-de-api-v)
-  - [Maak gebruik van Ceph ipv digital assets (O)](#maak-gebruik-van-ceph-ipv-digital-assets-o)
+  - [Maak gebruik object storage ipv digital assets (O)](#maak-gebruik-object-storage-ipv-digital-assets-o)
   - [Authz: gebruik authz api versie > v2 (V)](#authz-gebruik-authz-api-versie--v2-v)
   - [Voorkom memory leaks en voorzie gc indien nodig (V)](#voorkom-memory-leaks-en-voorzie-gc-indien-nodig-v)
   - [Implementeer SIGTERM events (V)](#implementeer-sigterm-events-v)
@@ -117,7 +117,7 @@ en de presentatie die gegeven is op de Tech guild bijeenkomst van 21/3/2019: htt
 
 ## Gebruik het Kibana Dashboard voor applicatie log troubleshooting (V)
 
-Alle stdout logs van de Digipolis container infrastructuur komen automatisch terecht in Elastic. Via een Kibana dashboard kan je filteren op uw project en/of container waardoor je op een eenvoudige manier toegang hebt tot alle container logs.
+Alle stdout logs van de Digipolis container infrastructuur komen automatisch terecht in Elastic. Via een Kibana dashboard kan je filteren op jouw project en/of container waardoor je op een eenvoudige manier toegang hebt tot alle container logs.
 
 Ook kan je de logs eenvoudig filteren op keywords of er gestructureerd in zoeken indien je JSON logt naar stdout.
 
@@ -142,7 +142,7 @@ Hier kan je bijvoorbeeld netwerk connectiviteit, cpu/ram etc opvolgen voor een c
 
 
 
-## Gebruik het APM  Dashboard voor performantie troubleshooting (V)
+## Gebruik het APM  Dashboard voor performantie troubleshooting (O)
 
 
 Een APM tool is een van de betere oplossingen om performantie problemen te analyseren. Als er APM instrumentation voorzien is in de verschillende componenten krijgt men een heel duidelijk visueel overzicht van de flow die er binnen een bepaald proces plaatsvindt.
@@ -153,7 +153,9 @@ Problemen die je via APM eenvoudig kan detecteren:
 * geen optimale code zoals zaken afhandelen in loops etc
 * cpu belasting van het systeem (gaps tussen apm items)
 
-Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is, dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur.
+Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is, dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur. 
+
+Meer informatie over APM kan je [hier](https://github.com/digipolisantwerpdocumentation/application-performance-monitoring) vinden.
 
 
 
@@ -174,7 +176,7 @@ Voor de implementatie van de health checks is er een nieuwe standaard in de maak
 
 -   Zet de juiste beveiliging op de endpoints (ze moeten snel uitgevoerd kunnen worden)
 
--   Bedenk bij het opstellen van het components endpoint (voorheen 'monitoring endpoint) goed welke onderliggende componenten echt kritisch zijn voor het functioneren van je applicatie en welke niet (bijvoorbeeld: de logging engine is niet kritisch, maar de database wel). En bepaal op basis daarvan of je  endpoint op OK, degraded of outage (of in de oude versie: OK, WARN, CRIT) komt te staan. 
+-   Bedenk bij het opstellen van het components endpoint (voorheen 'monitoring' endpoint) goed welke onderliggende componenten echt kritisch zijn voor het functioneren van je applicatie en welke niet (bijvoorbeeld: de logging engine is niet kritisch, maar de database wel). En bepaal op basis daarvan of je  endpoint op OK, degraded of outage (of in de oude versie: OK, WARN, CRIT) komt te staan. 
 
 -   Vraag in de components (monitoring) call de status van onderliggende services op via de status API (het continuous monitoring systeem) in plaats van zelf nog een extra call te doen naar de betreffende service. Je hoeft op die manier in je components call dus geen status of monitoring endpoints meer te bevragen. Dit zorgt voor een snellere afhandeling en voorkomt circular calls die alles vertragen en uiteindelijk timeouts zouden kunnen geven. 
 
@@ -217,7 +219,7 @@ Uitleg over hoe je het best de loglevels instelt, incl verwijzingen naar voorbee
 Als er van technologieën een nieuwe versie wordt uitgebracht, bevat deze vaak verbeteringen in het kader van security, performantie, bugfixes etc. Het is daarom aangeraden zo snel mogelijk (na voldoende te testen) te upgraden naar de laatste versies. 
 Zolang de frameworks nog van security updates worden voorzien, is het geen absolute must om te upgraden. 
 
-Voor ASP .NET Core applicaties is het bijvoorbeeld heel relevant om zo snel mogelijk te upgraden naar de laatste versies van .net core (momenteel 2.2).
+Voor ASP .NET Core applicaties is het bijvoorbeeld heel relevant om zo snel mogelijk te upgraden naar de laatste versies van .net core (momenteel 3.1).
 
 ## Overweeg het gebruik van toolboxen in applicaties (V)
 
@@ -280,11 +282,11 @@ Maakt je applicatie gebruik van andere componenten, zorg dan indien mogelijk dat
 
 
 
-## Voorkom overbodige http callls (V)
+## Voorkom overbodige http calls (V)
 
-Beperkt het aantal http calls aangezien deze veel overhead geven in de afhandeling van de request. In onderstaande APM screenshot kan je zien dat er eerst een call gebeurd om een lijst op te halen waarvoor er dan voor ieder item een nieuwe call gebeurd om de detail op te halen.
+Beperk het aantal http calls aangezien deze veel overhead geven in de afhandeling van de request. In onderstaande APM screenshot kan je zien dat er eerst een call gebeurt om een lijst op te halen waarvoor er dan voor ieder item een nieuwe call gebeurt om de detail op te halen.
 
-In dit scenario zou het interessanter zijn om slechts enkele http request te doen die meerdere id's bevatten.
+In dit scenario zou het interessanter zijn om slechts enkele http requests te doen die meerdere id's bevatten.
 
 ![](./img/loopoverhttpcalls.png)
 
@@ -292,7 +294,7 @@ In dit scenario zou het interessanter zijn om slechts enkele http request te doe
 
 ## Voorkom blobs in het datamodel (V)
 
-Bewaar de attachments van bijvoorbeeld een dossier nooit in het database model van het dossier zelf maar bewaar er een referentie naar de bron. Bij voorkeur worden de binaire files zelf op Ceph of de assets engine bewaard.
+Bewaar de attachments van bijvoorbeeld een dossier nooit in het database model van het dossier zelf maar bewaar er een referentie naar de bron. Bij voorkeur worden de binaire files zelf een object storage(ceph/cloudian/s3) of de assets engine bewaard.
 
 Zo voorkom je bij CRUD operaties dat de binaire data voor vertraging gaat zorgen. Vaak worden er ook revisies bijgehouden van de entiteiten waardoor er wel wat diskspace verloren gaat aan duplicaten van deze attachments.
 
@@ -320,35 +322,53 @@ Hiervoor kan je:
 
 Om berichten tussen de api en de worker uit te wisselen kan er gebruik worden gemaakt van Kafka.
 
-## Maak gebruik van Ceph ipv digital assets (O)
+## Maak gebruik object storage ipv digital assets (O)
  
-Indien de applicatie intensief gebruikt maakt van assets kan het interessanter zijn om de bestanden op een ceph s3-compatible object storage te bewaren.
+Indien de applicatie intensief gebruik maakt van assets kan het interessanter zijn om de bestanden op een s3-compatible object storage(ceph/cloudian) te bewaren.
 
 Een voordeel van deze opzet kan ook zijn dat, indien er geen ACL van toepassing is, deze assets ook rechtstreeks ontsloten kunnen worden vanuit de S3 bucket waardoor de applicatie zelf ontlast wordt.
 
 ## Authz: gebruik authz api versie > v2 (V)
 
-De Authz v1 services draait op deprecated infrastructuur. In verschillende taskforces is naarboven gekomen dat de v1 responsetijden ~x5 trager zijn dan >=v2.
+De Authz v1 services draaien op deprecated infrastructuur. In verschillende taskforces is naar boven gekomen dat de responsetijden van de Authz v2 service (of hoger) ~x5 sneller zijn dan deze voor versie Authz v1.
 
 ![](./img/authzv1.png)
 
 
 ## Voorkom memory leaks en voorzie gc indien nodig (V)
 
-Bij sommige projecten zien we onderstaande memory patroon. Het geheugen loopt op tot de limiet die is ingesteld voor de container en deze container wordt dan automatisch herstart.
+Bij sommige projecten zien we onderstaand memory patroon. Het geheugen loopt op tot de limiet die is ingesteld voor de container en deze container wordt dan automatisch herstart.
 
 ![](./img/containerkilled.png)
 
 Dit kan voorkomen worden door geen memory leaks te schrijven :)
-* Ga nauwkeurig om met data die je in het geheugen bewaard zonder deze te deleten/expiren (bv cache)
+* Ga nauwkeurig om met data die je in het geheugen bewaart zonder deze te deleten/expiren (bv cache)
 * Als de toepassing veel data moet verwerken is het aangewezen om deze "in meerdere kleine stappen" te verwerken of te opteren voor een asynchrone verwerking.
 * Zorg ervoor dat garbage collection actief is en optimaal geconfigureerd is.
 
 ## Implementeer SIGTERM events (V)
 
-Zorg ervoor dat uw applicatie om kan met SIGTERM events. Wanneer het container platform beslist om de container te stoppen is het aangewezen om de processen die lopen (background, http) eerst af te ronden inplaats van de container abrubt te stoppen.
+Zorg ervoor dat uw applicatie om kan met SIGTERM events. Wanneer het container platform beslist om de container te stoppen is het aangewezen om de processen die lopen (background, http) eerst af te ronden in plaats van de container abrubt te stoppen.
 
-Deze aanpak zorgt ervoor dat de API request nog worden afgehandeld of dat er geen inconsistenties ontstaan indien de verwerking niet idempotent is.
+Deze aanpak zorgt ervoor dat de API requests nog worden afgehandeld of dat er geen inconsistenties ontstaan indien de verwerking van een background job niet idempotent is.
+
+In onderstaand voorbeeld worden de background processen graceful afgesloten alvorens de webserver af te sluiten.
+
+```javascript
+const server = app.listen(3000, () => console.log('Example app listening on port 3000!'));
+
+process.on('SIGTERM', () => {
+  console.info('SIGTERM signal received.');
+  console.log('Closing http server.');
+
+  workers.finish();
+
+  server.close(() => {
+    console.log('Http server closed.');
+  });
+});
+```
+
 
 # Database
 ## Berekenen van connection pool settings (V)
@@ -444,7 +464,7 @@ Wanneer onderstaand fenomeen zich voordoet is dit waarschijnlijk te wijten aan h
 ![](./img/latencyrandombeforesharding.png)
 ## Maak gebruik van interne DNS'en waar mogelijk (O)
 
-In onderstaand afbeelding krijg je een overzicht voor de gemiddelde responsetijden voor het oproepen van eenzelfde "http ping" service.
+In onderstaande afbeelding krijg je een overzicht van de gemiddelde responsetijden voor het oproepen van eenzelfde "http ping" service.
 
 * apigw: api gateway -> api-gw-p.antwerpen.be
 * ext: via de externe dns -> naam-app*-*.antwerpen.be
