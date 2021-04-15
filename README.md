@@ -102,6 +102,10 @@ Aandachtspunten bij troubleshooting:
 
 # Tools
 
+Hieronder kan je een overzicht vinden van alle tools die beschikbaar zijn voor het projectteam om een probleem te analyseren.
+
+De url's van onderstaande tools kan je vinden op de [WIKI](https://wiki.antwerpen.be/ACPAAS/index.php/Tools).
+
 
 ## Gebruik het Splunk Dashboard voor HTTP troubleshooting (V)
 
@@ -156,7 +160,6 @@ Problemen die je via APM eenvoudig kan detecteren:
 Op deze manier kan je dan vrij snel bepalen of een bepaalde query traag is, dat de logica niet optimaal geschreven is of indien de latency veroorzaakt wordt door de infrastruur. 
 
 Meer informatie over APM kan je [hier](https://github.com/digipolisantwerpdocumentation/application-performance-monitoring) vinden.
-
 
 
 
@@ -219,7 +222,7 @@ Uitleg over hoe je het best de loglevels instelt, incl verwijzingen naar voorbee
 Als er van technologieën een nieuwe versie wordt uitgebracht, bevat deze vaak verbeteringen in het kader van security, performantie, bugfixes etc. Het is daarom aangeraden zo snel mogelijk (na voldoende te testen) te upgraden naar de laatste versies. 
 Zolang de frameworks nog van security updates worden voorzien, is het geen absolute must om te upgraden. 
 
-Voor ASP .NET Core applicaties is het bijvoorbeeld heel relevant om zo snel mogelijk te upgraden naar de laatste versies van .net core (momenteel 3.1).
+Voor ASP .NET Core applicaties is het bijvoorbeeld heel relevant om zo snel mogelijk te upgraden naar de laatste versies van .net core (momenteel 5.0).
 
 ## Overweeg het gebruik van toolboxen in applicaties (V)
 
