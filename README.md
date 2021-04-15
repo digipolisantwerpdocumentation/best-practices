@@ -104,7 +104,7 @@ Aandachtspunten bij troubleshooting:
 
 Hieronder kan je een overzicht vinden van alle tools die beschikbaar zijn voor het projectteam om een probleem te analyseren.
 
-De url's van onderstaande tools kan je vinden op de [WIKI](https://wiki.antwerpen.be/ACPAAS/index.php/Tools).
+De url's van deze tools kan je vinden op [deze WIKI](https://wiki.antwerpen.be/ACPAAS/index.php/Tools).
 
 
 ## Gebruik het Splunk Dashboard voor HTTP troubleshooting (V)
