@@ -117,7 +117,7 @@ De belangrijkste metrics van een HTTP-call voor het bepalen van de gezondheid va
 Zie uitleg: https://wiki.antwerpen.be/Digipolis/index.php/Splunk_(Ontwikkelaars) 
 en de presentatie die gegeven is op de Tech guild bijeenkomst van 21/3/2019: https://docs.google.com/presentation/d/17ahE8aA7iDEL8elM2WGknYA2AyDxBbgBz1VMrpS-r1I/edit?usp=sharing
 
-De HAPoxy HTTP logs komen sinds mei 2021 in Elastic terecht.
+De HAProxy HTTP logs komen sinds mei 2021 in Elastic terecht.
 
 ## Gebruik het Kibana Dashboard voor applicatie log troubleshooting (V)
 
