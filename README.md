@@ -279,6 +279,12 @@ Bij het aanspreken van een API vanuit je applicatie maak je best een bewuste afw
 
 Maakt je applicatie gebruik van andere componenten, zorg dan indien mogelijk dat er retry’s zijn ingebouwd. Als je in je applicatie een 502 of 503 terugkrijgt, zou je best automatisch een retry van de call doen.
 
+Hou er ook rekening mee dat een service kan beschermd worden met **rate-limit** functionaliteit. De service (en/of API gateway) zal **HTTP response code 429** teruggeven als de rate-limit grens is bereikt.
+
+Onze API gateway geeft 2 HTTP headers terug indien rate-limit actief is :
+- **X-RateLimit-Limit-minute** : het maximum aantal requests (in dit geval per minuut)
+- **X-RateLimit-Remaining-minute** : het aantal nog mogelijke requests (in dit geval per minuut)
+
 *To do: de uitwerking hiervan verder bekijken: Vragen we alle applicaties om dit zelf in te bouwen, of kan hiervoor een handreiking gedaan worden zoals een toolbox maken, het op gatewayniveau oplossen, tools aanbieden die dit probleem oplossen en integreren met de bestaande infrastructuur (zoals http://www.thepollyproject.org)?*
 
 
